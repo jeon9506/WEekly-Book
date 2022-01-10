@@ -63,7 +63,6 @@ def delete_comment():
         'userId':user_id_receive,
         'bookId':book_id_receive
     }
-
     db.articles.delete_one(doc)
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
