@@ -1,59 +1,6 @@
-/******************************************************************
-  Theme Name: Anime
-  Description: Anime video tamplate
-  Author: Colorib
-  Author URI: https://colorib.com/
-  Version: 1.0
-  Created: Colorib
-******************************************************************/
-
 /*----------------------------------------*/
 /* Template default CSS
 /*----------------------------------------*/
-html,
-body {
-	height: 100%;
-	font-family: "Mulish", sans-serif;
-	-webkit-font-smoothing: antialiased;
-	background: white;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0;
-	color: #111111;
-	font-weight: 400;
-	font-family: "Mulish", sans-serif;
-}
-
-h1 {
-	font-size: 70px;
-}
-
-h2 {
-	font-size: 36px;
-}
-
-h3 {
-	font-size: 30px;
-}
-
-h4 {
-	font-size: 24px;
-}
-
-h5 {
-	font-size: 18px;
-}
-
-h6 {
-	font-size: 16px;
-}
-
 p {
 	font-size: 15px;
 	font-family: "Mulish", sans-serif;
@@ -101,19 +48,9 @@ ol {
 	content: "";
 }
 
-.set-bg {
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: top center;
-}
-
 .spad {
 	padding-top: 100px;
 	padding-bottom: 100px;
-}
-
-.search-model-form {
-	padding: 0 15px;
 }
 
 .search-model-form input {
@@ -124,30 +61,6 @@ ol {
 	background: 0 0;
 	color: #999;
 }
-
-.search-close-switch {
-	position: absolute;
-	width: 50px;
-	height: 50px;
-	background: #333;
-	color: #fff;
-	text-align: center;
-	border-radius: 50%;
-	font-size: 28px;
-	line-height: 28px;
-	top: 30px;
-	cursor: pointer;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-}
-
 /*---------------------
   Header
 -----------------------*/
@@ -179,20 +92,6 @@ ol {
 	color: #c6c6c6;
 }
 
-.header__menu ul li:hover .dropdown {
-	top: 62px;
-	opacity: 1;
-	visibility: visible;
-}
-
-.header__menu ul li:hover .dropdown li a {
-	background: transparent;
-}
-
-.header__menu ul li:last-child {
-	margin-right: 0;
-}
-
 .header__menu ul li a {
 	font-size: 15px;
 	color: #ffffff;
@@ -202,12 +101,6 @@ ol {
 	-o-transition: all, 0.5s;
 	transition: all, 0.5s;
 	padding: 20px;
-}
-
-.header__menu ul li a span {
-	position: relative;
-	font-size: 17px;
-	top: 2px;
 }
 
 .header__right {
@@ -226,10 +119,6 @@ ol {
 	color: #c6c6c6;
 }
 
-.header__right a:last-child {
-	margin-right: 0;
-}
-
 /*---------------------
   News
 -----------------------*/
@@ -246,17 +135,4 @@ ol {
 	padding-top: 60px;
 	padding-bottom: 40px;
 	position: relative;
-}
-
-/*--------------------------------- Responsive Media Quaries -----------------------------*/
-@media only screen and (min-width: 1200px) and (max-width: 1300px) {
-	.hero {
-		overflow: hidden;
-	}
-}
-
-@media only screen and (min-width: 1200px) {
-	.container {
-		max-width: 1170px;
-	}
 }
