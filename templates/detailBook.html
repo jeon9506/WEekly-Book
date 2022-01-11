@@ -14,11 +14,63 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
+    <script>
+        function my_page() {
+            window.location.href = "/mypage"
+        }
+
+        function logout() {
+            $.removeCookie('mytoken', {path: '/'})
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+        // 댓글 저장
+        function create_comment() {
+            let commentChk = $('#input-comment').val()
+            if (commentChk) {
+                $.ajax({
+                    type: "POST",
+                    url: `/createComment`,
+                    data: {
+                        user_id_give: "{{ user_info.userId }}",
+                        nickname_give: "{{ user_info.nickname }}",
+                        book_id_give: "{{ book_id }}",
+                        comment_give: $('#input-comment').val()
+                    },
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.href = "/viewDetail?book_id={{ book_id }}"
+                    }
+                });
+            } else {
+                alert("댓글을 입력해 주세요!")
+            }
+        }
+
+        // 댓글 삭제
+        function delete_comment(comment_id) {
+            $.ajax({
+                type: "POST",
+                url: `/delComment`,
+                data: {
+                    user_id_give: "{{ user_info.userId }}",
+                    comment_id_give: comment_id
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = "/viewDetail?book_id={{ book_id }}"
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -51,16 +103,14 @@
                 <div class="col-lg-9">
                     <div class="book__details__text">
                         <div class="book__details__title">
-                            <h3>불편한 편의점({{ book_id }})</h3>
+                            <h3>불편한 편의점</h3>
                             <span>김호연 ／ 나무옆의자</span>
                         </div>
                         <div class="book__details__rating">
                             <div class="rating">
-                                <a href="#"><i class="fa fa-star"></i></a>
-                                <a href="#"><i class="fa fa-star"></i></a>
-                                <a href="#"><i class="fa fa-star"></i></a>
-                                <a href="#"><i class="fa fa-star"></i></a>
-                                <a href="#"><i class="fa fa-star-half-o"></i></a>
+                                {#                                <a href="#"><i class="fa fa-star"></i></a>#}
+                                {#                                <a href="#"><i class="fa fa-star-o"></i></a>#}
+                                {#                                <a href="#"><i class="fa fa-star-half-o"></i></a>#}
                             </div>
                             <span>평점 : {{ book_info.book_score }}점</span>
                         </div>
@@ -85,8 +135,10 @@
                         <div>{{ book_info.book_contents }}</div>
 
                         <div class="book__details__btn">
-                            <a class="like-btn"><i class="fa fa-heart-o"></i> 좋아요</a>
-                            <a class="hate-btn"><i class="fa fa-heart-o"></i> 싫어요</a>
+                            <button type="button" class="btn btn-outline-dark"><i class="fa fa-heart-o"></i>&nbsp;관심등록
+                            </button>
+                            <button type="button" class="btn btn-dark"><i class="fa fa-heart-o"></i>&nbsp;관심취소
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -94,37 +146,42 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8">
-                <div class="book__details__review">
-                    <div class="section-title">
-                        <h5>댓글 | (2)</h5>
-                    </div>
-                    <div class="book__review__item">
-                        <div class="book__review__item__pic">
-                            <img src="../static/img/logo.svg" alt="">
-                        </div>
-                        <div class="book__review__item__text">
-                            <h6>닉네임 - <span>5 Hour ago</span></h6>
-                            <p>리뷰내용</p>
-                        </div>
-                    </div>
-                    <div class="book__review__item">
-                        <div class="book__review__item__pic">
-                            <img src="../static/img/logo.svg" alt="">
-                        </div>
-                        <div class="book__review__item__text">
-                            <h6>닉네임 - <span>5 Hour ago</span></h6>
-                            <p>리뷰내용</p>
-                        </div>
-                    </div>
-                </div>
                 <div class="book__details__form">
                     <div class="section-title">
-                        <h5>리뷰</h5>
+                        <h5>댓글 | (
+                            {% if comments|length == 0 %}
+                                0
+                            {% else %}
+                                {{ comments|length }}
+                            {% endif %})
+                            <button id="post-comment" class="btn btn-dark" type="button" onclick="create_comment()">
+                                <i class="fa fa-location-arrow"></i>등록
+                            </button>
+                        </h5>
                     </div>
                     <form action="#">
-                        <textarea placeholder="리뷰를 등록해 주세요"></textarea>
-                        <button type="submit"><i class="fa fa-location-arrow"></i> 리뷰등록</button>
+                        <textarea id="input-comment" placeholder="댓글을 등록해 주세요"></textarea>
                     </form>
+                </div>
+                <div class="book__details__review">
+                    {% for comment in comments %}
+                        <div class="book__review__item">
+                            <div class="book__review__item__pic">
+                                <i class="fa fa-user fa-5x" aria-hidden="true"></i>
+                            </div>
+                            <div class="book__review__item__text">
+                                <h6>{{ comment.nickname }}
+                                    {% if comment.userId == user_info.userId %}
+                                        <button type="button" class="btn-sm btn-outline-danger"
+                                                onclick="delete_comment('{{ comment.comment_id }}')">삭제
+                                        </button>
+                                    {% endif %}
+                                </h6>
+                                <p>{{ comment.comment }}</p>
+
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import Flask, render_template, jsonify, request, url_for, redirect
 
 import jwt
@@ -119,8 +120,11 @@ def view_detail():
     token_receive = request.cookies.get('mytoken')
 
     try:
+        # 로그인 정보
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
+
+        # 책 크롤링 정보
         book_id = request.args.get("book_id")
 
         headers = {
@@ -153,36 +157,36 @@ def view_detail():
             'book_content': book_contents
         }
 
-        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info)
+        # 댓글 정보
+        comments = list(db.comment.find({}))
+
+        for comment in comments :
+            comment['comment_id'] = str(comment["_id"])
+            print(comment['comment_id'])
+
+        # print(comments)
+
+        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info, comments= comments)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-# 도서 상세페이지(Read)
-@app.route('/readComment', methods=['GET'])
-def read_comment():
-    comments = list(db.comments.find({}))
-    return jsonify({'result': 'success', 'details': comments})
 
 # 도서 댓글 등록(Create)
 @app.route('/createComment', methods=['POST'])
 def create_comment():
     user_id_receive = request.form['user_id_give']
+    nickname_receive = request.form['nickname_give']
     book_id_receive = request.form['book_id_give']
     comment_receive = request.form['comment_give']
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = request.get(book_id_receive, headers=headers)
-
-    soup = BeautifulSoup(data.text, 'html.parser')
-
     doc = {
         'userId' : user_id_receive,
+        'nickname': nickname_receive,
         'bookId' : book_id_receive,
         'comment': comment_receive
     }
-    db.articles.insert_one(doc)
+    db.comment.insert_one(doc)
 
     return jsonify({'msg':'댓글이 등록되었습니다!'})
 
@@ -190,15 +194,16 @@ def create_comment():
 @app.route('/delComment', methods=['POST'])
 def delete_comment():
     user_id_receive = request.form['user_id_give']
-    book_id_receive = request.form['book_id_give']
+    comment_id_receive = request.form['comment_id_give']
 
     # commentObject key값 받기
 
     doc = {
-        'userId':user_id_receive,
-        'bookId':book_id_receive
+        '_id': ObjectId(comment_id_receive),
+        'userId':user_id_receive
     }
-    db.articles.delete_one(doc)
+
+    db.comment.delete_one(doc)
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
 
