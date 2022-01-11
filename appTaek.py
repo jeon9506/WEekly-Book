@@ -137,23 +137,43 @@ def create():
     scrappingBookList = [];
 
     for book in booklist:
-        #booklink = book.select_one('a')['href']['bid']
         booklink = book.select_one('a')['href']
+        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
         title = book.select_one("dl > dt > a").text
         author = book.select_one("dl > dd > a").text
         imgsrc = book.select_one('div> div > a > img')['src']
+        #publisher = book.select_one(' dl > dd.txt_block').text
+        # section_bestseller > ol > li:nth-child(1) > dl > dd.txt_block > a.N\=a\:bel\.publisher
         doc = {
             'title': title,
             'author': author,
             'desc': desc[count],
             'imgsrc': imgsrc,
-            'booklink': booklink
+            'booklink': booklink,
+            'bid': bid,
         }
         count += 1
         scrappingBookList.append(doc)
 
+    # 크롤링한 도서관련 데이터 books 테이블에 삽입한다.(imgsrc랑 booklink는 화면에 보여주기만 할 거라서 삽입안해도 된다.)
     for row in scrappingBookList:
-        print('~~행:', row)
+        bid = row['bid']
+        title = row['title']
+        author = row['author']
+        desc = row['desc']
+        #print(bid, title, author, desc)
+        #print('~~행:', row)
+        doc = {
+            'bid':bid,
+            'title':title,
+            'author':author,
+            'desc':desc
+        }
+        bookinfo = db.books.find_one({'bid':bid})
+        if bookinfo is None:    # bookinfo가 없으면 삽입해야지
+            print('~~ 같지않음 : ',bid)
+            db.books.insert_one(row)
+
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -198,12 +218,14 @@ def mypage():
         title = book.select_one("dl > dt > a").text
         author = book.select_one("dl > dd > a").text
         imgsrc = book.select_one('div> div > a > img')['src']
+        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
         doc = {
             'title': title,
             'author': author,
             'desc': desc[count],
             'imgsrc': imgsrc,
-            'booklink': booklink
+            'booklink': booklink,
+            'bid':bid
         }
         count += 1
         scrappingBookList.append(doc)
