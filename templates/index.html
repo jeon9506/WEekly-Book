@@ -30,50 +30,22 @@
 </script>
 <body>
 
-<!-- Header Section Begin -->
-<!--<header class="header">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-lg-2">-->
-<!--                <div class="header__logo">-->
-<!--                    <a href="./index.html">-->
-<!--                        <img src="../static/img/logo.svg" alt="">-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6">-->
-<!--                <div class="header__nav">-->
-<!--                    <nav class="header__menu">-->
-<!--                        <ul>-->
-<!--                            <li><a href="./index.html">test 메인페이지</a></li>-->
-<!--                            <li><a href="./detailBook.html">test 상세페이지</a></li>-->
-<!--                        </ul>-->
-<!--                    </nav>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4">-->
-<!--                <div class="header__right">-->
-<!--                    ~님&nbsp;&nbsp;&nbsp;-->
-<!--                    <a href="./login.html">마이페이지</a>-->
-<!--                    <a href="./login.html">로그인 or 로그아웃</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
 
-<!--    </div>-->
-<!--</header>-->
-<!-- Header End -->
+<!-- Header Section Begin -->
+<header class="header">
     <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
         <div class="navbar-brand" style="margin-left: 10px">
             <img src="static/img/logo.svg">
         </div>
 
         <div style="margin-left:fill;color:white;margin-right: 10px">
-            {{user_info.nickname}}님 &nbsp;&nbsp;&nbsp;
+            {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
             <a onclick="my_page()">마이페이지 &nbsp;&nbsp;&nbsp;</a>
             <a onclick="logout()">로그아웃</a>
         </div>
     </nav>
+</header>
+<!-- Header End -->
 
 <!-- Book Section Begin -->
 <section class="spad">
@@ -89,7 +61,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="section-contents">
-                                <a onclick="window.location.href='viewDetail?book_id=18926010'">불편한 편의점 보기</a>
+                                <a onclick="window.location.href='viewDetail?book_id=20937219'">불편한 편의점 보기</a>
                             </div>
                         </div>
                     </div>

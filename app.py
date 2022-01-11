@@ -1,8 +1,11 @@
-from flask import Flask, render_template, jsonify, request,url_for,redirect
+from flask import Flask, render_template, jsonify, request, url_for, redirect
+
 import jwt
 import datetime
 import hashlib
 from datetime import datetime, timedelta
+
+import requests
 from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
@@ -113,11 +116,48 @@ def first():
 # 도서 상세페이지(Read)
 @app.route('/viewDetail')
 def view_detail():
-    book_id = request.args.get("book_id")
-    print(book_id)
+    token_receive = request.cookies.get('mytoken')
 
-    return render_template("detailBook.html", book_id=book_id)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.user.find_one({"userId": payload["id"]})
+        book_id = request.args.get("book_id")
 
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get(f'https://book.naver.com/bookdb/book_detail.naver?bid={book_id}', headers=headers)
+
+        soup = BeautifulSoup(data.text, 'html.parser')
+
+        book_name = soup.select_one('#container > div.spot > div.book_info > h2 > a').text.strip()
+        book_img_url = soup.select_one('#container > div.spot > div.book_info > div.thumb.type_end > div > a > img')["src"]
+        author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2) > a.N\=a\:bil\.publisher').text.strip()
+        public_date = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2)').previous_element.strip()
+        page = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(3) > span:nth-child(2)').previous_element.strip()
+        isbn = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(3) > span:nth-child(4)').previous_element.strip()
+        plate_type = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(3) > em:nth-child(5)').next_element.next_element.strip()
+        book_score = soup.select_one('#txt_desc_point > strong:nth-child(2) > span').previous_element.strip()
+        book_contents = soup.select_one('#bookIntroContent')
+
+        #print(book_name, book_img_url, author, public_date, page, isbn, plate_type, book_score, book_contents)
+
+        book_info = {
+            'book_name': book_name,
+            'book_img_url': book_img_url,
+            'author': author,
+            'public_date': public_date,
+            'page': page,
+            'isbn': isbn,
+            'plate_type': plate_type,
+            'book_score': book_score,
+            'book_content': book_contents
+        }
+
+        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 # 도서 상세페이지(Read)
 @app.route('/readComment', methods=['GET'])
 def read_comment():
