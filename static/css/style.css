@@ -73,6 +73,9 @@ ol {
 /*---------------------
   Header
 -----------------------*/
+.colorBlack{
+	background-color:black;
+}
 
 .header {
 	background: #3F63BF;
