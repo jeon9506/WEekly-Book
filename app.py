@@ -120,6 +120,10 @@ def mypage():
 
     soup = BeautifulSoup(data.text, 'html.parser')
 
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"userId": payload["id"]})
+    print(user_info)
+
     booklist = soup.select('#section_bestseller > ol > li')
     count = 0
     desc = []
@@ -164,7 +168,7 @@ def mypage():
     # userId : abc1 이 북마크한 책
     for book in books:
         for mark in bookmarks:
-            if str(book['_id']) == mark['bookid'] and mark['userid'] == userinfo['userId']:
+            if str(book['_id']) == mark['bookId'] and mark['userId'] == userinfo['userId']:
                 usrBookmarkList.append(book)
                 print('~~~ abc1이 book 마크한 책 : ', book)
 
@@ -298,6 +302,16 @@ def delete_comment():
     db.comments.delete_one(doc)
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
+
+@app.route('/delBookmark', methods=['POST'])
+def delBookmark():
+   bookId_receive = request.form['bookId_give'];
+   bookTitle_receive = request.form['bookTitle_give'];
+   # 북마크테이블을 삭제시켜야함
+
+   db.bookmarks.delete_one({'bookid': bookId_receive})
+
+   return jsonify({'msg': bookTitle_receive+'이(가) 삭제되었습니다.'});
 
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)
