@@ -257,8 +257,8 @@ def view_detail():
         # 즐겨찾기 정보
         bookmarks = ''
         if books is not None :
-            books['bookId'] = str(books["_id"])
-            bookmarks = db.bookmarks.find_one({'userId': bid, 'bookId': books['bookId']})
+            bookmarks['bookId'] = str(books["_id"])
+            bookmarks = db.bookmarks.find_one({'userId': bid, 'bookId': bookmarks['bookId']})
             print(user_info)
             print(bookmarks)
 
