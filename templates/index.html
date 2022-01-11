@@ -4,59 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 </head>
 <script>
-
+    function my_page(){
+            window.location.href="/mypage"
+    }
+    function logout() {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃!')
+                window.location.href = "/login"
+    }
 </script>
 <body>
 
 <!-- Header Section Begin -->
-<header class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="header__logo">
-                    <a href="./index.html">
-                        <img src="../static/img/logo.svg" alt="">
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="header__nav">
-                    <nav class="header__menu">
-                        <ul>
-                            <li><a href="./index.html">test 메인페이지</a></li>
-                            <li><a href="./detailBook.html">test 상세페이지</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="header__right">
-                    ~님&nbsp;&nbsp;&nbsp;
-                    <a href="./login.html">마이페이지</a>
-                    <a href="./login.html">로그인 or 로그아웃</a>
-                </div>
-            </div>
+<!--<header class="header">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-2">-->
+<!--                <div class="header__logo">-->
+<!--                    <a href="./index.html">-->
+<!--                        <img src="../static/img/logo.svg" alt="">-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-lg-6">-->
+<!--                <div class="header__nav">-->
+<!--                    <nav class="header__menu">-->
+<!--                        <ul>-->
+<!--                            <li><a href="./index.html">test 메인페이지</a></li>-->
+<!--                            <li><a href="./detailBook.html">test 상세페이지</a></li>-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-lg-4">-->
+<!--                <div class="header__right">-->
+<!--                    ~님&nbsp;&nbsp;&nbsp;-->
+<!--                    <a href="./login.html">마이페이지</a>-->
+<!--                    <a href="./login.html">로그인 or 로그아웃</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</header>-->
+<!-- Header End -->
+    <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand" style="margin-left: 10px">
+            <img src="static/img/logo.svg">
         </div>
 
-    </div>
-</header>
-<!-- Header End -->
+        <div style="margin-left:fill;color:white;margin-right: 10px">
+            {{user_info.nickname}}님 &nbsp;&nbsp;&nbsp;
+            <a onclick="my_page()">마이페이지 &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()">로그아웃</a>
+        </div>
+    </nav>
 
 <!-- Book Section Begin -->
 <section class="spad">
