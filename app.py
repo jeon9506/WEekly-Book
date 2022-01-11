@@ -63,7 +63,7 @@ def joinCheck():
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     nickname=request.form['nickname_give']
     doc = {
-        "userId": userId_receive,            # 아이디
+        "userId": userId_receive,           # 아이디
         "password": password_hash,          # 비밀번호
         "nickname": nickname                # 닉네임
     }
