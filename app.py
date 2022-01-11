@@ -21,6 +21,20 @@ client = MongoClient('localhost', 27017)
 #client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.shareTodayBook
 
+
+# 초기화면 로그인 화면으로 이동 함
+@app.route('/')
+def first():
+    token_receive = request.cookies.get('mytoken')
+    if(token_receive is not None):
+        try:
+            return redirect(url_for("main"))
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        except jwt.exceptions.DecodeError:
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    else:
+        return render_template('login.html')
 # 로그인 회원가입 관련 api
 
 # 로그인시
@@ -179,10 +193,7 @@ def mypage():
 
 # 로그인 회원가입 관련 api 끝
 
-# 초기화면 로그인 화면으로 이동 함
-@app.route('/')
-def first():
-    return render_template('login.html')
+
 
 # 도서 상세페이지(Read)
 @app.route('/viewDetail')
