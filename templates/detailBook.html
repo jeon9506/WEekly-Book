@@ -42,12 +42,12 @@
                     data: {
                         user_id_give: "{{ user_info.userId }}",
                         nickname_give: "{{ user_info.nickname }}",
-                        book_id_give: "{{ book_id }}",
+                        bid_give: "{{ bid }}",
                         comment_give: $('#input-comment').val()
                     },
                     success: function (response) {
                         alert(response["msg"])
-                        window.location.href = "/viewDetail?book_id={{ book_id }}"
+                        window.location.href = "/viewDetail?bid={{ bid }}"
                     }
                 });
             } else {
@@ -66,7 +66,7 @@
                 },
                 success: function (response) {
                     alert(response["msg"])
-                    window.location.href = "/viewDetail?book_id={{ book_id }}"
+                    window.location.href = "/viewDetail?bid={{ bid }}"
                 }
             });
         }
@@ -135,9 +135,11 @@
                         <div>{{ book_info.book_contents }}</div>
 
                         <div class="book__details__btn">
-                            <button type="button" class="btn btn-outline-dark"><i class="fa fa-heart-o"></i>&nbsp;관심등록
+                            <button type="button" class="btn btn-outline-dark">
+                                <i class="fa fa-heart-o"></i>&nbsp;관심등록
                             </button>
-                            <button type="button" class="btn btn-dark"><i class="fa fa-heart-o"></i>&nbsp;관심취소
+                            <button type="button" class="btn btn-dark">
+                                <i class="fa fa-heart-o"></i>&nbsp;관심취소
                             </button>
                         </div>
                     </div>

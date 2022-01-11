@@ -208,11 +208,11 @@ def view_detail():
         user_info = db.user.find_one({"userId": payload["id"]})
 
         # 책 크롤링 정보
-        book_id = request.args.get("book_id")
+        bid = request.args.get("bid")
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-        data = requests.get(f'https://book.naver.com/bookdb/book_detail.naver?bid={book_id}', headers=headers)
+        data = requests.get(f'https://book.naver.com/bookdb/book_detail.naver?bid={bid}', headers=headers)
 
         soup = BeautifulSoup(data.text, 'html.parser')
 
@@ -247,14 +247,18 @@ def view_detail():
             comment['comment_id'] = str(comment["_id"])
             # print(comment['comment_id'])
 
-        # 관심등록 여부정보
-        bookmarks = list(db.bookmarks.find({}))
+        # 도서 정보
+        books = db.books.find_one({'bid': bid})
 
-        for bookmark in bookmarks :
-            bookmark['bookmark_id'] = str(bookmark["_id"])
-            print(bookmark['bookmark_id'])
+        # 즐겨찾기 정보
+        bookmarks = ''
+        if books is not None :
+            books['bookId'] = str(books["_id"])
+            bookmarks = db.bookmarks.find_one({'userId': bid, 'bookId': books['bookId']})
+            print(user_info)
+            print(bookmarks)
 
-        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
+        return render_template("detailBook.html", bid=bid, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -265,13 +269,13 @@ def view_detail():
 def create_comment():
     user_id_receive = request.form['user_id_give']
     nickname_receive = request.form['nickname_give']
-    book_id_receive = request.form['book_id_give']
+    bid_receive = request.form['bid_give']
     comment_receive = request.form['comment_give']
 
     doc = {
         'userId' : user_id_receive,
         'nickname': nickname_receive,
-        'bookId' : book_id_receive,
+        'bid' : bid_receive,
         'comment': comment_receive
     }
     db.comments.insert_one(doc)
