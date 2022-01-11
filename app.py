@@ -22,6 +22,21 @@ client = MongoClient('localhost', 27017)
 #client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.shareTodayBook
 
+
+# 초기화면 로그인 화면으로 이동 함
+@app.route('/')
+def first():
+
+    token_receive = request.cookies.get('mytoken')
+    if(token_receive is not None):
+        try:
+            return redirect(url_for("main"))
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        except jwt.exceptions.DecodeError:
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    else:
+        return render_template('login.html')
 # 로그인 회원가입 관련 api
 
 # 로그인시
@@ -98,10 +113,81 @@ def main():
 @app.route('/mypage')
 def mypage():
     token_receive = request.cookies.get('mytoken')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    booklist = soup.select('#section_bestseller > ol > li')
+    count = 0
+    desc = []
+    for index in range(0, 25):
+        desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
+        desc_total = (desc_data[4:100] + "...")
+        desc.append(desc_total)
+        for i in range(len(desc)):
+            desc[i] = desc[i].replace('\n', '')
+
+    # 스크래핑 한걸 리스트에 담는다
+    scrappingBookList = [];
+
+    for book in booklist:
+        booklink = book.select_one('a')['href']
+        img_tag = book.select_one('a > img')
+        title = book.select_one("dl > dt > a").text
+        author = book.select_one("dl > dd > a").text
+        imgsrc = book.select_one('div> div > a > img')['src']
+        doc = {
+            'title': title,
+            'author': author,
+            'desc': desc[count],
+            'imgsrc': imgsrc,
+            'booklink': booklink
+        }
+        count += 1
+        scrappingBookList.append(doc)
+
+    # for row in scrappingBookList:
+    #     print('~~행:', row)
+
+    # db에 있는 정보를 가져옴
+    bookmarks = list(db.bookmarks.find({}))
+    userinfo = db.users.find_one({'userId': 'abc1'})    # 이거 수정 필요
+    books = list(db.books.find({}))
+    print('~~~ bookmarks: ', bookmarks)
+    print('~~~ userinfo : ', userinfo)
+    print('~~~ books : ', books)
+
+    usrBookmarkList = []
+    # userId : abc1 이 북마크한 책
+    for book in books:
+        for mark in bookmarks:
+            if str(book['_id']) == mark['bookid'] and mark['userid'] == userinfo['userId']:
+                usrBookmarkList.append(book)
+                print('~~~ abc1이 book 마크한 책 : ', book)
+
+    print('~~~ usrBookmarkList: ', usrBookmarkList)  # 이건 abc1이 북마크한 책의 리스트
+
+    # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
+    # 추려준다.
+    userBookmarkList = []
+    for sblist in scrappingBookList:
+        for blist in usrBookmarkList:
+            if sblist['title'] == blist['title']:
+                sblist['id'] = str(blist['_id'])
+                userBookmarkList.append(sblist)
+
+    # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
+    for row in userBookmarkList:
+        print('최종 : ', row)
+
+
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
-        return render_template('mypage.html', user_info=user_info)
+        return render_template('mypage.html', user_info=user_info, userBookmarkList=userBookmarkList)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -109,10 +195,7 @@ def mypage():
 
 # 로그인 회원가입 관련 api 끝
 
-# 초기화면 로그인 화면으로 이동 함
-@app.route('/')
-def first():
-    return render_template('login.html')
+
 
 # 도서 상세페이지(Read)
 @app.route('/viewDetail')
