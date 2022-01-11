@@ -241,15 +241,20 @@ def view_detail():
         }
 
         # 댓글 정보
-        comments = list(db.comment.find({}))
+        comments = list(db.comments.find({}))
 
         for comment in comments :
             comment['comment_id'] = str(comment["_id"])
-            print(comment['comment_id'])
+            # print(comment['comment_id'])
 
-        # print(comments)
+        # 관심등록 여부정보
+        bookmarks = list(db.bookmarks.find({}))
 
-        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info, comments= comments)
+        for bookmark in bookmarks :
+            bookmark['bookmark_id'] = str(bookmark["_id"])
+            print(bookmark['bookmark_id'])
+
+        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -269,7 +274,7 @@ def create_comment():
         'bookId' : book_id_receive,
         'comment': comment_receive
     }
-    db.comment.insert_one(doc)
+    db.comments.insert_one(doc)
 
     return jsonify({'msg':'댓글이 등록되었습니다!'})
 
@@ -286,7 +291,7 @@ def delete_comment():
         'userId':user_id_receive
     }
 
-    db.comment.delete_one(doc)
+    db.comments.delete_one(doc)
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
 
