@@ -164,7 +164,7 @@ def mypage():
     # userId : abc1 이 북마크한 책
     for book in books:
         for mark in bookmarks:
-            if str(book['_id']) == mark['bookid'] and mark['userid'] == userinfo['userId']:
+            if str(book['_id']) == mark['bookId'] and mark['userId'] == userinfo['userId']:
                 usrBookmarkList.append(book)
                 print('~~~ abc1이 book 마크한 책 : ', book)
 
