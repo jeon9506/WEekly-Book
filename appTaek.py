@@ -109,6 +109,61 @@ def main():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/create')
+def create():
+    token_receive = request.cookies.get('mytoken')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    #payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    #user_info = db.user.find_one({"userId": payload["id"]})
+
+
+    booklist = soup.select('#section_bestseller > ol > li')
+    count = 0
+    desc = []
+    for index in range(0, 25):
+        desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
+        desc_total = (desc_data[4:100] + "...")
+        desc.append(desc_total)
+        for i in range(len(desc)):
+            desc[i] = desc[i].replace('\n', '')
+
+    # 스크래핑 한걸 리스트에 담는다
+    scrappingBookList = [];
+
+    for book in booklist:
+        #booklink = book.select_one('a')['href']['bid']
+        booklink = book.select_one('a')['href']
+        title = book.select_one("dl > dt > a").text
+        author = book.select_one("dl > dd > a").text
+        imgsrc = book.select_one('div> div > a > img')['src']
+        doc = {
+            'title': title,
+            'author': author,
+            'desc': desc[count],
+            'imgsrc': imgsrc,
+            'booklink': booklink
+        }
+        count += 1
+        scrappingBookList.append(doc)
+
+    for row in scrappingBookList:
+        print('~~행:', row)
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.user.find_one({"userId": payload["id"]})
+        return render_template('index.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 #mypage로 이동하기
 @app.route('/mypage')
 def mypage():
