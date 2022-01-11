@@ -18,10 +18,10 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+
 </head>
 
 <body>
-
 <!-- Header Section Begin -->
 <header class="header">
     <div class="container">
@@ -56,30 +56,126 @@
 </header>
 <!-- Header End -->
 
-<!-- News Section Begin -->
-<section class="spad">
+<!-- Body Section Begin -->
+<section class="book-details spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8">
-                            <div class="section-title">
-                                <h4>상세페이지</h4>
+        <div class="book__details__content">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="book__details__pic">
+                        <img src="../static/img/logo.svg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="book__details__text">
+                        <div class="book__details__title">
+                            <h3>불편한 편의점({{book_id}})</h3>
+                            <span>김호연 ／ 나무옆의자</span>
+                        </div>
+                        <div class="book__details__rating">
+                            <div class="rating">
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star-half-o"></i></a>
+                            </div>
+                            <span>1.029 Votes</span>
+                        </div>
+                        <div class="book__details__widget">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <ul>
+                                        <li><span>출판일자 : </span> 2021.04.20</li>
+                                        <li><span>페이지 : </span> Lerche</li>
+
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <ul>
+                                        <li><span>ISBN</span> 9791161571188</li>
+                                        <li><span>판형</span> 규격외 변형</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div class="section-contents">
-                                <a href="#">{{book_id}}</a>
-                            </div>
+                        <b>책소개</b>
+                        <p>※ 인터넷 한정 특별판: 매장 구매, 바로드림 구매 시에는 기존 일반판 표지와 랜덤으로 제공됩니다.
+
+                            원 플러스 원의 기쁨, 삼각김밥 모양의 슬픔, 만 원에 네 번의 폭소가 터지는 곳!
+                            힘겨운 시대를 살아가는 우리들에게 다가온 조금 특별한 편의점 이야기
+
+                            『불편한 편의점』 15만부 기념 한정판 윈터 에디션 출간!
+                            2021년 4월에 출간되어 15만이 넘는 독자의 뜨거운 사랑을 받고 있는 소설! 청파동 골목의 작은 편의점에서 펼쳐지는 마법 같은 이야기 『불편한 편의점』이 윈터
+                            에디션을 선보입니다.
+                            눈 내리는 밤, 크리스마스 조명을 밝힌 편의점이 등대처럼 든든하게 골목을 지키고 있네요. 전면에 홀로그램 박을 입혀 신비롭게 반짝이는 표지가 특별함을 더합니다. 책
+                            속에는 김호연 작가의 친필 서명도 인쇄되어 있답니다.
+                            서울역 노숙인 독고가 편의점에서 따뜻한 겨울을 보낸 것처럼 여러분의 겨울도 『불편한 편의점』과 함께 더욱 따스하길 바랍니다.
+
+                            2013년 세계문학상 우수상 수상작 『망원동 브라더스』로 데뷔한 후 일상적 현실을 위트 있게 그린 경쾌한 작품과 인간의 내밀한 욕망을 기발한 상상력으로 풀어낸 스릴러
+                            장르를 오가며 독자적인 작품 세계를 쌓아올린 작가 김호연. 그의 다섯 번째 장편소설 『불편한 편의점』이 나무옆의자에서 출간되었다. 『불편한 편의점』은 청파동 골목
+                            모퉁이에 자리 잡은 작은 편의점을 무대로 힘겨운 시대를 살아가는 우리 이웃들의 삶의 속내와 희로애락을 따뜻하고 유머러스하게 담아낸 작품이다. 『망원동 브라더스』에서
+                            망원동이라는 공간의 체험적 지리지를 잘 활용해 유쾌한 재미와 공감을 이끌어냈듯 이번에는 서울의 오래된 동네 청파동에 대한 공감각을 생생하게 포착해 또 하나의
+                            흥미진진한 ‘동네 이야기’를 탄생시켰다.
+
+                            서울역에서 노숙인 생활을 하던 독고라는 남자가 어느 날 70대 여성의 지갑을 주워준 인연으로 그녀가 운영하는 편의점에서 야간 알바를 하면서 이야기가 시작된다. 덩치가
+                            곰 같은 이 사내는 알코올성 치매로 과거를 기억하지 못하는 데다 말도 어눌하고 행동도 굼떠 과연 손님을 제대로 상대할 수 있을까 의구심을 갖게 하는데 웬걸, 의외로
+                            그는 일을 꽤 잘해낼 뿐 아니라 주변 사람들을 묘하게 사로잡으면서 편의점의 밤을 지키는 든든한 일꾼이 되어간다.
+                            현실감 넘치는 캐릭터와 그들 간의 상호작용을 점입가경으로 형상화하는 데 일가견이 있는 작가의 작품답게 이 소설에서도 독특한 개성과 사연을 지닌 인물들이 차례로 등장해
+                            서로 티격태격하며 별난 관계를 형성해간다. 고등학교에서 역사를 가르치다 정년퇴임하여 매사에 교사 본능이 발동하는 편의점 사장 염 여사를 필두로 20대 취준생 알바
+                            시현, 50대 생계형 알바 오 여사, 매일 밤 야외 테이블에서 참참참(참깨라면, 참치김밥, 참이슬) 세트로 혼술을 하며 하루의 스트레스를 푸는 회사원 경만,
+                            마지막이라는 각오로 청파동에 글을 쓰러 들어온 30대 희곡작가 인경, 호시탐탐 편의점을 팔아치울 기회를 엿보는 염 여사의 아들 민식, 민식의 의뢰를 받아 독고의 뒤를
+                            캐는 사설탐정 곽이 그들이다. 제각기 녹록지 않은 인생의 무게와 현실적 문제를 안고 있는 이들은 각자의 시선으로 독고를 관찰하는데, 그 과정에서 발생하는 오해와
+                            대립, 충돌과 반전, 이해와 공감은 자주 폭소를 자아내고 어느 순간 울컥 눈시울이 붉어지게 한다. 그렇게 골목길의 작은 편의점은 불편하기 짝이 없는 곳이었다가 고단한
+                            삶을 위로하고 웃음을 나누는 특별한 공간이 된다.</p>
+
+                        <div class="book__details__btn">
+                            <a class="like-btn"><i class="fa fa-heart-o"></i> 좋아요</a>
+                            <a class="hate-btn"><i class="fa fa-heart-o"></i> 싫어요</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <div class="book__details__review">
+                    <div class="section-title">
+                        <h5>댓글 | (2)</h5>
+                    </div>
+                    <div class="book__review__item">
+                        <div class="book__review__item__pic">
+                            <img src="../static/img/logo.svg" alt="">
+                        </div>
+                        <div class="book__review__item__text">
+                            <h6>닉네임 - <span>5 Hour ago</span></h6>
+                            <p>리뷰내용</p>
+                        </div>
+                    </div>
+                    <div class="book__review__item">
+                        <div class="book__review__item__pic">
+                            <img src="../static/img/logo.svg" alt="">
+                        </div>
+                        <div class="book__review__item__text">
+                            <h6>닉네임 - <span>5 Hour ago</span></h6>
+                            <p>리뷰내용</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="book__details__form">
+                    <div class="section-title">
+                        <h5>리뷰</h5>
+                    </div>
+                    <form action="#">
+                        <textarea placeholder="리뷰를 등록해 주세요"></textarea>
+                        <button type="submit"><i class="fa fa-location-arrow"></i> 리뷰등록</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
-<!-- News Section End -->
+<!-- Body Section End -->
 
 <!-- Footer Section Begin -->
 <footer class="footer">

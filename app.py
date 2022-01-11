@@ -16,10 +16,10 @@ def main():
     return render_template('index.html')
 
 # 도서 상세페이지(Read)
-@app.route('/viewDetail/<book_id>')
-def view_detail(book_id):
-    # book_id_receive = request.args.get("book_id_give")
-    # print(book_id_receive)
+@app.route('/viewDetail')
+def view_detail():
+    book_id = request.args.get("book_id")
+    print(book_id)
 
     return render_template("detailBook.html", book_id=book_id)
 
