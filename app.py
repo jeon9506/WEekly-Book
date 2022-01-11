@@ -25,6 +25,7 @@ db = client.shareTodayBook
 # 초기화면 로그인 화면으로 이동 함
 @app.route('/')
 def first():
+
     token_receive = request.cookies.get('mytoken')
     if(token_receive is not None):
         try:
