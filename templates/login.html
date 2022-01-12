@@ -24,7 +24,9 @@
                     {#jstl#}
                     {% if msg %}
                         alert("{{ msg }}")
+                        window.location.href="login"
                     {% endif %}
+
                 });
                 function sign_in() {
                 let userId = $("#input-userId").val()
