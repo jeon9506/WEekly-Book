@@ -98,7 +98,6 @@ def check_dup():
 
 @app.route('/main')
 def main():
-
     # 로그인 정보 저장 (토큰)
     token_receive = request.cookies.get('mytoken')
     try:
