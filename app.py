@@ -270,17 +270,11 @@ def view_detail():
 
         author = ''
         try:
-            author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2) > a.N\=a\:bil\.author\,i\:5000007444').text.strip()
+            author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2)').text.strip()
         except AttributeError as e:
             if author == None:
                 author = ''
-
-        publisher = ''
-        try:
-            publisher = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2) > a.N\=a\:bil\.publisher').text.strip()
-        except AttributeError as e:
-            if publisher == None:
-                publisher = ''
+        print('author : ' + author)
 
         book_score = ''
         try:
@@ -296,11 +290,6 @@ def view_detail():
             if book_contents == None:
                 book_contents = ''
 
-        print(author)
-        print(publisher)
-        print(book_score)
-        print(book_contents)
-
         #print(book_name, book_img_url, author, public_date, book_score, book_contents)
 
         # 댓글 정보(book_info)
@@ -308,7 +297,6 @@ def view_detail():
             'book_name': book_name,
             'book_img_url': book_img_url,
             'author': author,
-            'publisher': publisher,
             'book_score': book_score,
             'book_content': book_contents
         }
