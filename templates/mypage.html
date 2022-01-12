@@ -45,7 +45,10 @@
             window.location.href = "/login"
         }
 
-        function delBookmark(bookId, userId){
+        function delBookmark(bookId, bookTitle, userId){
+            if (!confirm("'"+bookTitle+"'을(를) 관심 목록에서 삭제하시겠습니까?"))
+                return;
+
             $.ajax({
                 type: "POST",
                 url: "/delBookmark",
@@ -93,7 +96,7 @@
                         <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
                         <p style="margin-top: 15px">저자/ 출판사 &nbsp;: &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
                         <p class="card-text">{{bookrow.desc}}</p>
-                        <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제</button>
+                        <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{ bookrow.title }}','{{user_info.userId}}')">삭제</button>
                     </div>
                 </div>
                 {% endfor %}
