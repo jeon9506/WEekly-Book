@@ -186,6 +186,7 @@ def mypage():
         bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
         title = book.select_one("dl > dt > a").text
         author = book.select_one("dl > dd > a").text
+        publisher = book.select_one("dl > dd").text.split('|')[1].strip()
         imgsrc = book.select_one('div> div > a > img')['src']
         doc = {
             'title': title,
@@ -193,7 +194,8 @@ def mypage():
             'desc': desc[count],
             'imgsrc': imgsrc,
             'booklink': booklink,
-            'bid': bid
+            'bid': bid,
+            'publisher':publisher
         }
         count += 1
         scrappingBookList.append(doc)
