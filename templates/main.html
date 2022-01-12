@@ -76,8 +76,9 @@
                     <div class="book_list">
                         {% for book in books %}
                             <div class="media">
-                                <img class="book_image" src='{{ book.book_img }}'
-                                     alt="Generic placeholder image">
+                                <a href="/viewDetail?bid={{ book.bid }}">
+                                    <img class="book_image" src='{{ book.book_img }}' alt="Generic placeholder image">
+                                </a>
                                 <div class="media-body">
                                     <a href="/viewDetail?bid={{ book.bid }}"
                                        class="book_title"> {{ book.title }}. </a>
