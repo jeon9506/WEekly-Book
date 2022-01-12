@@ -18,8 +18,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 SECRET_KEY = 'SPARTA'
 
 #DB경로 설정
-client = MongoClient('localhost', 27017)
-#client = MongoClient('mongodb://test:test@localhost', 27017)
+#client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.shareTodayBook
 
 
