@@ -71,7 +71,7 @@
     <header class="header">
         <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
             <div class="navbar-brand" style="margin-left: 10px;width: 10%">
-                <img src="static/img/logo.jpg" onclick="window.location.href= '/'">
+                <img src="static/img/logo.jpg" onclick="window.location.href= '/'" style="cursor:pointer">
             </div>
 
             <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
@@ -90,7 +90,7 @@
             <div id="cards-box" class="card-columns">
                 {% for bookrow in userBookmarkList %}
                 <div class="card" style="border: solid #bee5eb; border-radius: 15px;">
-                    <img src="{{bookrow.imgsrc}}" style="width: 150px; margin: auto; display: block; padding-top: 15px;"
+                    <img src="{{bookrow.imgsrc}}" style="cursor:pointer; width: 150px; margin: auto; display: block; padding-top: 15px;"
                     onclick='window.open("{{bookrow.booklink}}")'/>
                     <div class="card-body">
                         <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
