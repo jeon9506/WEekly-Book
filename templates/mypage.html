@@ -83,9 +83,9 @@
                 onclick='window.open("{{bookrow.booklink}}")'/>
                 <div class="card-body">
                     <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
-                    <p style="margin-top: 15px">저자/ 출판사 : &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
+                    <p style="margin-top: 15px">저자/ 출판사 &nbsp;: &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
                     <p class="card-text">{{bookrow.desc}}</p>
-                    <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제(userid같이넘겨)</button>
+                    <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제</button>
                 </div>
             </div>
             {% endfor %}
