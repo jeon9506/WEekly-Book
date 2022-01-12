@@ -74,7 +74,7 @@
         {% for book in books %}
         <footer class= "footer">
           <div class= "media">
-            <img class= "book_image" src={{book.book_img}} alt="Generic placeholder image">
+              <img class= "book_image" src='{{book.book_img}}' alt="Generic placeholder image">
             <div class= "media-body">
                 <a href= "/viewDetail?bid={{book.bid}}"  class= "book_title" > {{book.title}}. </a>
                 <p class="book_author"> 저자: {{book.author}}</p>

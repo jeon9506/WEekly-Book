@@ -120,12 +120,12 @@ def main():
         title = chart.select_one("dl > dt > a").text
         author = chart.select_one("dl > dd > a").text
         book_img = chart.select_one("div > div > a > img")['src']
-        book_detail = chart.select_one("dl > dt > a")['href']
+        #book_detail = chart.select_one("dl > dt > a")['href']
         bid = chart.select_one('a')['href'].split('?')[1].split('=')[1]
 
         doc = {
             'book_img': book_img,
-            'book_detail': book_detail,
+            #'book_detail': book_detail,
             'title': title,
             'author': author,
             'desc': desc[count],
@@ -133,12 +133,13 @@ def main():
         }
         count += 1
 
-        bid_dup = db.todayBook2.find_one({'bid': bid})
+        bid_dup = db.books.find_one({'bid': bid})
         if bid_dup is None:
             print('~~ 같지않음 : ', bid)
-            db.todayBook2.insert_one(doc)
+            db.books.insert_one(doc)
 
-    books = list(db.todayBook2.find({}, {'_id': False}))
+    books = list(db.books.find({}, {'_id': False}))
+
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -148,6 +149,8 @@ def main():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
 
 #mypage로 이동하기
 @app.route('/mypage')
