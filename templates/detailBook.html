@@ -70,6 +70,38 @@
                 }
             });
         }
+
+        //북마크 저장
+        function save_bookmarks() {
+            $.ajax({
+                type: "POST",
+                url: `/createBookmark`,
+                data: {
+                    user_id_give: "{{ user_info.userId }}",
+                    book_id_give: "{{ books.bookId }}"
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = "/viewDetail?bid={{ bid }}"
+                }
+            });
+        }
+
+        //북마크 삭제
+        function delete_bookmarks() {
+            $.ajax({
+                type: "POST",
+                url: `/delBookmark`,
+                data: {
+                    user_id_give: "{{ user_info.userId }}",
+                    book_id_give: "{{ bookmarks.bookId }}"
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = "/viewDetail?bid={{ bid }}"
+                }
+            });
+        }
     </script>
 </head>
 
@@ -103,8 +135,8 @@
                 <div class="col-lg-9">
                     <div class="book__details__text">
                         <div class="book__details__title">
-                            <h3>불편한 편의점</h3>
-                            <span>김호연 ／ 나무옆의자</span>
+                            <h3>{{ book_info.book_name }}</h3>
+                            <span>{{ book_info.author }} ／ {{ book_info.author }}</span>
                         </div>
                         <div class="book__details__rating">
                             <div class="rating">
@@ -112,7 +144,6 @@
                                 {#                                <a href="#"><i class="fa fa-star-o"></i></a>#}
                                 {#                                <a href="#"><i class="fa fa-star-half-o"></i></a>#}
                             </div>
-                            <span>평점 : {{ book_info.book_score }}점</span>
                         </div>
                         <div class="book__details__widget">
                             <div class="row">
@@ -120,7 +151,7 @@
                                     <ul>
                                         <li><span>출판일자 : </span> {{ book_info.public_date }}</li>
                                         <li><span>페이지 : </span> {{ book_info.page }}</li>
-
+                                        <li><span>평점 : </span> {{ book_info.book_score }}점</li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
@@ -135,13 +166,13 @@
                         <div>{{ book_info.book_contents }}</div>
 
                         <div class="book__details__btn">
-                            {% if bookmarks.bookId != '' %}
-                                <button type="button" class="btn btn-outline-dark">
-                                    <i class="fa fa-heart-o"></i>&nbsp;관심등록
+                            {% if bookmarks.bookId %}
+                                <button type="button" class="btn btn-dark" onclick="delete_bookmarks()">
+                                    <i class="fa fa-heart-o"></i>&nbsp;관심취소
                                 </button>
                             {% else %}
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa fa-heart-o"></i>&nbsp;관심취소
+                                <button type="button" class="btn btn-outline-dark" onclick="save_bookmarks()">
+                                    <i class="fa fa-heart-o"></i>&nbsp;관심등록
                                 </button>
                             {% endif %}
                         </div>
