@@ -98,6 +98,7 @@ def check_dup():
 
 @app.route('/main')
 def main():
+
     # 로그인 정보 저장 (토큰)
     token_receive = request.cookies.get('mytoken')
     try:
@@ -119,8 +120,8 @@ def create():
 
     soup = BeautifulSoup(data.text, 'html.parser')
 
-    #payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    #user_info = db.user.find_one({"userId": payload["id"]})
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"userId": payload["id"]})
 
 
     booklist = soup.select('#section_bestseller > ol > li')
@@ -174,6 +175,12 @@ def create():
             print('~~ 같지않음 : ',bid)
             db.books.insert_one(row)
 
+    doc = {
+        'userId':user_info['userId'],
+        'bookId':'61dd9d739f223e7b37dfcfc4'
+    }
+    print(doc)
+    #db.bookmarks.insert_one(doc)
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -230,26 +237,25 @@ def mypage():
         count += 1
         scrappingBookList.append(doc)
 
-    #for row in scrappingBookList:
-    #    print('~~행:', row)
+    for row in scrappingBookList:
+        print('~~행:', row)
 
     # db에 있는 정보를 가져옴
     bookmarks = list(db.bookmarks.find({}))
-    #userinfo = db.users.find_one({'userId': user_info['userId']})    # 이거 수정 필요
     books = list(db.books.find({}))
-    print('~~~ bookmarks: ', bookmarks)
-    print('~~~user_info: ',user_info)
-    print('~~~ books : ', books)
+    # print('~~~ bookmarks: ', bookmarks)
+    # print('~~~ user_info: ',user_info)
+    # print('~~~ books : ', books)
 
     usrBookmarkList = []
-    # userId : abc1 이 북마크한 책
+    # 사용자가 북마크한 책
     for book in books:
         for mark in bookmarks:
             if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
                 usrBookmarkList.append(book)
-                print('~~~ abc1이 book 마크한 책 : ', book)
+                #print('~~~ 접속한 사용자가 book 마크한 책 : ', book)
 
-    print('~~~ usrBookmarkList: ', usrBookmarkList)  # 이건 abc1이 북마크한 책의 리스트
+    #print('~~~ usrBookmarkList: ', usrBookmarkList)  # 접속한 사용자가 북마크한 책의 리스트
 
     # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
     # 추려준다.
@@ -260,6 +266,7 @@ def mypage():
                 sblist['id'] = str(blist['_id'])
                 userBookmarkList.append(sblist)
 
+    print('~~~ userBookmarkList : ', userBookmarkList)
     # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
     for row in userBookmarkList:
         print('최종 : ', row)
@@ -376,13 +383,15 @@ def delete_comment():
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
 
+# 북마크 삭제
 @app.route('/delBookmark', methods=['POST'])
 def delBookmark():
    bookId_receive = request.form['bookId_give'];
    bookTitle_receive = request.form['bookTitle_give'];
    # 북마크테이블을 삭제시켜야함
 
-   db.bookmarks.delete_one({'bookid': bookId_receive})
+   print('~~~ 삭제 : ',bookId_receive)
+   db.bookmarks.delete_one({'bookId': bookId_receive})
 
    return jsonify({'msg': bookTitle_receive+'이(가) 삭제되었습니다.'});
 

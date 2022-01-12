@@ -309,7 +309,7 @@ def delBookmark():
    bookTitle_receive = request.form['bookTitle_give'];
    # 북마크테이블을 삭제시켜야함
 
-   db.bookmarks.delete_one({'bookid': bookId_receive})
+   db.bookmarks.delete_one({'bookId': bookId_receive})
 
    return jsonify({'msg': bookTitle_receive+'이(가) 삭제되었습니다.'});
 
