@@ -20,7 +20,7 @@
 
     <style>
         .wrap {
-            width: 1100px;
+            width: 1200px;
             margin: auto;
         }
     </style>
@@ -83,29 +83,15 @@
                 onclick='window.open("{{bookrow.booklink}}")'/>
                 <div class="card-body">
                     <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
-                    <p>저자 : {{bookrow.author}}</p>
+                    <p style="margin-top: 15px">저자/ 출판사 : &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
                     <p class="card-text">{{bookrow.desc}}</p>
-                    <p>{{bookrow.id}}</p>
-<!--                    <p class="card-text comment">{{bookmarkList}}</p>-->
                     <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제(userid같이넘겨)</button>
                 </div>
             </div>
             {% endfor %}
 
-            <div class="card">
-                <img class="card-img-top"
-                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-                     alt="Card image cap">
-                <div class="card-body">
-                    <a target="_blank" href="#" class="card-title">여기 기사 제목이 들어가죠</a>
-                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
-                </div>
-            </div>
         </div>
-
     </div>
-
 </section>
 <!-- News Section End -->
 
