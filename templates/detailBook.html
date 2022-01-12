@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
     <script>
+        $(document).ready(function () {
+
+        });
+
         function my_page() {
             window.location.href = "/mypage"
         }
@@ -163,8 +167,7 @@
                             </div>
                         </div>
                         <b>책소개</b>
-                        <div>{{ book_info.book_contents }}</div>
-
+                        <div>{{ book_info.book_content|safe }}</div>
                         <div class="book__details__btn">
                             {% if bookmarks.bookId %}
                                 <button type="button" class="btn btn-dark" onclick="delete_bookmarks()">

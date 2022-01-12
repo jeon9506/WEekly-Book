@@ -252,7 +252,7 @@ def view_detail():
         # 즐겨찾기 테이블에서 userId, bookId를 조건으로 조회
         bookmarks = db.bookmarks.find_one({'userId': user_info['userId'], 'bookId': books["bookId"]})
         # if books is not None :
-        print(bookmarks)
+        # print(bookmarks)
 
         return render_template("detailBook.html", bid=bid, user_info=user_info, book_info=book_info, books= books, comments=comments, bookmarks=bookmarks)
     except jwt.ExpiredSignatureError:
