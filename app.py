@@ -122,7 +122,7 @@ def main():
         book_img = chart.select_one("div > div > a > img")['src']
         #book_detail = chart.select_one("dl > dt > a")['href']
         bid = chart.select_one('a')['href'].split('?')[1].split('=')[1]
-        publisher = chart.select_one("dl > dd").text.split('|')[1]
+        publisher = chart.select_one("dl > dd").text.split('|')[1].strip()
 
         doc = {
             'book_img': book_img,
