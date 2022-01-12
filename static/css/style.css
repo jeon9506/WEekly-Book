@@ -43,6 +43,8 @@ ol {
 	margin: 0;
 }
 
+
+
 /*---------------------
   Helper CSS
 -----------------------*/
@@ -74,7 +76,7 @@ ol {
   Header
 -----------------------*/
 .colorBlack{
-	background-color:black;
+	background-color:#b2def2;
 }
 
 .header {
@@ -340,7 +342,7 @@ ol {
   Footer
 -----------------------*/
 .footer {
-	background: #3F63BF;
+	background: #b2def2;
 	padding-top: 60px;
 	padding-bottom: 40px;
 	position: relative;
