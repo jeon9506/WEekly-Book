@@ -19,7 +19,7 @@ SECRET_KEY = 'SPARTA'
 
 #DB경로 설정
 #client = MongoClient('localhost', 27017)
-client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('mongodb://test:test@15.164.211.199', 27017)
 db = client.shareTodayBook
 
 
