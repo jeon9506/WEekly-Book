@@ -269,7 +269,7 @@ def mypage():
     print('~~~ userBookmarkList : ', userBookmarkList)
     # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
     for row in userBookmarkList:
-        print('최종 : ', row)
+        print('~~최종 : ', row)
 
 
     try:
