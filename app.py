@@ -165,9 +165,6 @@ def mypage():
 
     soup = BeautifulSoup(data.text, 'html.parser')
 
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    user_info = db.user.find_one({"userId": payload["id"]})
-
     booklist = soup.select('#section_bestseller > ol > li')
     count = 0
     desc = []
