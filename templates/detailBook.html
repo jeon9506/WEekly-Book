@@ -4,122 +4,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <!-- Font Awesome CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
-
-    <script>
-        $(document).ready(function () {
-
-        });
-
-        function my_page() {
-            window.location.href = "/mypage"
-        }
-
-        function logout() {
-            $.removeCookie('mytoken', {path: '/'})
-            alert('로그아웃!')
-            window.location.href = "/login"
-        }
-
-        // 댓글 저장
-        function create_comment() {
-            let commentChk = $('#input-comment').val()
-            if (commentChk) {
-                $.ajax({
-                    type: "POST",
-                    url: `/createComment`,
-                    data: {
-                        user_id_give: "{{ user_info.userId }}",
-                        nickname_give: "{{ user_info.nickname }}",
-                        bid_give: "{{ bid }}",
-                        comment_give: $('#input-comment').val()
-                    },
-                    success: function (response) {
-                        alert(response["msg"])
-                        window.location.href = "/viewDetail?bid={{ bid }}"
-                    }
-                });
-            } else {
-                alert("댓글을 입력해 주세요!")
-            }
-        }
-
-        // 댓글 삭제
-        function delete_comment(comment_id) {
-            $.ajax({
-                type: "POST",
-                url: `/delComment`,
-                data: {
-                    user_id_give: "{{ user_info.userId }}",
-                    comment_id_give: comment_id
-                },
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.href = "/viewDetail?bid={{ bid }}"
-                }
-            });
-        }
-
-        //북마크 저장
-        function save_bookmarks() {
-            $.ajax({
-                type: "POST",
-                url: `/createBookmark`,
-                data: {
-                    user_id_give: "{{ user_info.userId }}",
-                    book_id_give: "{{ books.bookId }}"
-                },
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.href = "/viewDetail?bid={{ bid }}"
-                }
-            });
-        }
-
-        //북마크 삭제
-        function delete_bookmarks() {
-            $.ajax({
-                type: "POST",
-                url: `/delBookmark`,
-                data: {
-                    user_id_give: "{{ user_info.userId }}",
-                    book_id_give: "{{ bookmarks.bookId }}"
-                },
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.href = "/viewDetail?bid={{ bid }}"
-                }
-            });
-        }
-    </script>
 </head>
+<script>
+    function logout() {
+        $.removeCookie('mytoken', {path: '/'})
+        alert('로그아웃!')
+        window.location.href = "/login"
+    }
+
+    // 댓글 저장
+    function create_comment() {
+        let commentChk = $('#input-comment').val()
+        if (commentChk) {
+            $.ajax({
+                type: "POST",
+                url: `/createComment`,
+                data: {
+                    user_id_give: "{{ user_info.userId }}",
+                    nickname_give: "{{ user_info.nickname }}",
+                    bid_give: "{{ bid }}",
+                    comment_give: $('#input-comment').val()
+                },
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = "/viewDetail?bid={{ bid }}"
+                }
+            });
+        } else {
+            alert("댓글을 입력해 주세요!")
+        }
+    }
+
+    // 댓글 삭제
+    function delete_comment(comment_id) {
+        $.ajax({
+            type: "POST",
+            url: `/delComment`,
+            data: {
+                user_id_give: "{{ user_info.userId }}",
+                comment_id_give: comment_id
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.href = "/viewDetail?bid={{ bid }}"
+            }
+        });
+    }
+
+    //북마크 저장
+    function save_bookmarks() {
+        $.ajax({
+            type: "POST",
+            url: `/createBookmark`,
+            data: {
+                user_id_give: "{{ user_info.userId }}",
+                book_id_give: "{{ books.bookId }}"
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.href = "/viewDetail?bid={{ bid }}"
+            }
+        });
+    }
+
+    //북마크 삭제
+    function delete_bookmarks() {
+        $.ajax({
+            type: "POST",
+            url: `/delBookmark`,
+            data: {
+                user_id_give: "{{ user_info.userId }}",
+                book_id_give: "{{ bookmarks.bookId }}"
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.href = "/viewDetail?bid={{ bid }}"
+            }
+        });
+    }
+</script>
+
 
 <body>
 <!-- Header Section Begin -->
 <header class="header">
     <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
         <div class="navbar-brand" style="margin-left: 10px">
-            <img src="static/img/logo.svg">
+            <img src="static/img/logo.svg" onclick="window.location.href= '/'">
         </div>
 
         <div style="margin-left:fill;color:white;margin-right: 10px">
             {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-            <a onclick="my_page()">마이페이지 &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
             <a onclick="logout()">로그아웃</a>
         </div>
     </nav>
@@ -156,9 +145,7 @@
                         </div>
                         <div class="book__details__rating">
                             <div class="rating">
-                                {#                                <a href="#"><i class="fa fa-star"></i></a>#}
-                                {#                                <a href="#"><i class="fa fa-star-o"></i></a>#}
-                                {#                                <a href="#"><i class="fa fa-star-half-o"></i></a>#}
+
                             </div>
                         </div>
                         <div class="book__details__widget">
@@ -225,7 +212,7 @@
                                         </button>
                                     {% endif %}
                                 </div>
-                                <p>{{ comment.comment }}</p>
+                                <p>&nbsp;&nbsp;{{ comment.comment }}</p>
                             </div>
                         </div>
                         <p></p>
@@ -234,6 +221,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
 <!-- Body Section End -->
 
