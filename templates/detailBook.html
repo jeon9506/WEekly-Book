@@ -17,6 +17,10 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+
+    <!-- font-awesome icon -->
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+  />
 </head>
 <script>
     function logout() {
@@ -135,7 +139,7 @@
                     <div class="book__details__text">
                         <div class="row">
                             <div class="book__details__title col-md-10">
-                                <h3>{{ book_info.book_name }}</h3>
+                                <h5><b>{{ book_info.book_name }}</b></h5>
                             </div>
                             <div class="book__details__btn col-md-2">
                                 {% if bookmarks.bookId %}
@@ -193,43 +197,36 @@
                                     {% endif %})
                                 </h5>
                             </div>
+                        </div>
+                        <p></p>
+                    </div>
+                    <div class="input-group mb-3">
+                        <textarea id="input-comment" class="form-control" placeholder="댓글을 등록해 주세요"
+                                  aria-label="댓글을 등록해 주세요" aria-describedby="basic-addon2"></textarea>
+                        <div class="input-group-append">
+                            <button id="post-comment" class="btn btn-dark" type="button" onclick="create_comment()">
+                                <i class="fa fa-location-arrow"></i>등록
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% for comment in comments %}
+                    <div class="alert alert-dark" role="alert">
+                    <div class="row">
+                            <div class="col-lg-11">
+                                <h6><i class="fa fa-user fa-x" aria-hidden="true"></i>&nbsp;{{ comment.nickname }}</h6>
+                            </div>
                             <div class="col-lg-1">
-                                <button id="post-comment" class="btn btn-dark" type="button" onclick="create_comment()">
-                                    <i class="fa fa-location-arrow"></i>등록
-                                </button>
+                                {% if comment.userId == user_info.userId %}
+                                    <button type="button" class="btn-sm btn-outline-info"
+                                            onclick="delete_comment('{{ comment.comment_id }}')"><i class="fa fa-trash-o"></i>
+                                    </button>
+                                {% endif %}
                             </div>
+                            <p>&nbsp;&nbsp;{{ comment.comment }}</p>
                         </div>
-                        <p></p>
                     </div>
-                    <form action="#">
-                        <textarea id="input-comment" placeholder="댓글을 등록해 주세요"></textarea>
-                    </form>
-                </div>
-                <div class="book__details__review">
-                    {% for comment in comments %}
-                        <div class="book__review__item">
-                        <div class="book__review__item__pic">
-                            <i class="fa fa-user fa-5x" aria-hidden="true"></i>
-                        </div>
-                        <div class="book__review__item__text">
-                            <div class="row">
-                                <div class="col-lg-11">
-                                    <h6>{{ comment.nickname }}</h6>
-                                </div>
-                                <div class="col-lg-1">
-                                    {% if comment.userId == user_info.userId %}
-                                        <button type="button" class="btn-sm btn-outline-danger"
-                                                onclick="delete_comment('{{ comment.comment_id }}')">삭제
-                                        </button>
-                                    {% endif %}
-                                </div>
-                                <p>&nbsp;&nbsp;{{ comment.comment }}</p>
-                            </div>
-                        </div>
-                        <p></p>
-                    {% endfor %}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

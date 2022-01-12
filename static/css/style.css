@@ -206,16 +206,10 @@ ol {
 /*---------------------
   Anime Details
 -----------------------*/
-.book__review__item__text {
-    overflow: hidden;
-    background: #F2F2F2;
-    padding: 18px 30px 16px 20px;
-    border-radius: 10px;
-}
 
-.book__review__item__text p {
-    line-height: 23px;
-    margin-bottom: 0;
+
+.book__details__pic{
+    text-align: center;
 }
 
 .book__details__form form textarea {
