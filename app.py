@@ -122,7 +122,6 @@ def mypage():
 
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = db.user.find_one({"userId": payload["id"]})
-    print('~~~ userId:', user_info['userId'])
 
     booklist = soup.select('#section_bestseller > ol > li')
     count = 0
@@ -139,7 +138,7 @@ def mypage():
 
     for book in booklist:
         booklink = book.select_one('a')['href']
-        img_tag = book.select_one('a > img')
+        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
         title = book.select_one("dl > dt > a").text
         author = book.select_one("dl > dd > a").text
         imgsrc = book.select_one('div> div > a > img')['src']
@@ -148,7 +147,8 @@ def mypage():
             'author': author,
             'desc': desc[count],
             'imgsrc': imgsrc,
-            'booklink': booklink
+            'booklink': booklink,
+            'bid': bid
         }
         count += 1
         scrappingBookList.append(doc)
@@ -158,35 +158,26 @@ def mypage():
 
     # db에 있는 정보를 가져옴
     bookmarks = list(db.bookmarks.find({}))
-    #userinfo = db.users.find_one({'userId': user_info['userId']})    # 이거 수정 필요
     books = list(db.books.find({}))
-    print('~~~ bookmarks: ', bookmarks)
-    print('~~~user_info: ',user_info)
-    print('~~~ books : ', books)
 
-    usrBookmarkList = []
-    # userId : abc1 이 북마크한 책
+    uBookmarkList = [] # 접속한 사용자가 북마크한 책을 넣어준다
     for book in books:
         for mark in bookmarks:
             if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
-                usrBookmarkList.append(book)
-                print('~~~ abc1이 book 마크한 책 : ', book)
-
-    print('~~~ usrBookmarkList: ', usrBookmarkList)  # 이건 abc1이 북마크한 책의 리스트
+                uBookmarkList.append(book)
 
     # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
     # 추려준다.
     userBookmarkList = []
     for sblist in scrappingBookList:
-        for blist in usrBookmarkList:
+        for blist in uBookmarkList:
             if sblist['title'] == blist['title']:
                 sblist['id'] = str(blist['_id'])
                 userBookmarkList.append(sblist)
 
     # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
     for row in userBookmarkList:
-        print('최종 : ', row)
-
+        print('~~~ 최종 : ', row)
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -307,7 +298,6 @@ def delete_comment():
 def delBookmark():
    bookId_receive = request.form['bookId_give'];
    bookTitle_receive = request.form['bookTitle_give'];
-   # 북마크테이블을 삭제시켜야함
 
    db.bookmarks.delete_one({'bookId': bookId_receive})
 
