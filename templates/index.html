@@ -70,17 +70,20 @@
 <!-- News Section End -->
 
 <!-- Footer Section Begin -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
+<div class= "book_list">
+        {% for book in books %}
+        <footer class= "footer">
+          <div class= "media">
+              <img class= "book_image" src='{{book.book_img}}' alt="Generic placeholder image">
+            <div class= "media-body">
+                <a href= "/viewDetail?bid={{book.bid}}"  class= "book_title" > {{book.title}}. </a>
+                <p class="book_author"> 저자: {{book.author}}</p>
+                <p class= "book_description"> {{book.desc}} </p>
             </div>
-            <div class="col-lg-8">
-                <p>b_2조</p>
-            </div>
-        </div>
+          </div>
+        </footer>
+        {% endfor %}
     </div>
-</footer>
 <!-- Footer Section End -->
 </body>
 
