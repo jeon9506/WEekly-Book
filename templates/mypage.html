@@ -36,14 +36,14 @@
             window.location.href = "/login"
         }
 
-        function delBookmark(id, title){
-            alert(id);
+        function delBookmark(bookId, userId){
+            alert(userId +' '+ bookId);
             $.ajax({
                 type: "POST",
                 url: "/delBookmark",
                 data: {
-                    bookId_give: id,
-                    bookTitle_give: title
+                    book_id_give: bookId,
+                    user_id_give: userId
                 },
                 success: function (response) { // 성공하면
                     alert(response["msg"]);
@@ -87,7 +87,7 @@
                     <p class="card-text">{{bookrow.desc}}</p>
                     <p>{{bookrow.id}}</p>
 <!--                    <p class="card-text comment">{{bookmarkList}}</p>-->
-                    <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{bookrow.title}}')">삭제(userid같이넘겨)</button>
+                    <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제(userid같이넘겨)</button>
                 </div>
             </div>
             {% endfor %}
