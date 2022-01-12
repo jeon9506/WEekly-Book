@@ -138,8 +138,21 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="book__details__text">
-                        <div class="book__details__title">
-                            <h3>{{ book_info.book_name }}</h3>
+                        <div class="row">
+                            <div class="book__details__title col-md-10">
+                                <h3>{{ book_info.book_name }}</h3>
+                            </div>
+                            <div class="book__details__btn col-md-2">
+                                {% if bookmarks.bookId %}
+                                    <button type="button" class="btn btn-dark" onclick="delete_bookmarks()">
+                                        <i class="fa fa-heart-o"></i>&nbsp;관심취소
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-outline-dark" onclick="save_bookmarks()">
+                                        <i class="fa fa-heart-o"></i>&nbsp;관심등록
+                                    </button>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="book__details__rating">
                             <div class="rating">
@@ -164,35 +177,31 @@
                         </div>
                         <b>책소개</b>
                         <div>{{ book_info.book_content|safe }}</div>
-                        <div class="book__details__btn">
-                            {% if bookmarks.bookId %}
-                                <button type="button" class="btn btn-dark" onclick="delete_bookmarks()">
-                                    <i class="fa fa-heart-o"></i>&nbsp;관심취소
-                                </button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-dark" onclick="save_bookmarks()">
-                                    <i class="fa fa-heart-o"></i>&nbsp;관심등록
-                                </button>
-                            {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 col-md-8">
+            <div class="col-lg-12 col-md-10">
                 <div class="book__details__form">
                     <div class="section-title">
-                        <h5>댓글 | (
-                            {% if comments|length == 0 %}
-                                0
-                            {% else %}
-                                {{ comments|length }}
-                            {% endif %})
-                            <button id="post-comment" class="btn btn-dark" type="button" onclick="create_comment()">
-                                <i class="fa fa-location-arrow"></i>등록
-                            </button>
-                        </h5>
+                        <div class="row">
+                            <div class="col-lg-11">
+                                <h5>댓글 | (
+                                    {% if comments|length == 0 %}
+                                        0
+                                    {% else %}
+                                        {{ comments|length }}
+                                    {% endif %})
+                                </h5>
+                            </div>
+                            <div class="col-lg-1">
+                                <button id="post-comment" class="btn btn-dark" type="button" onclick="create_comment()">
+                                    <i class="fa fa-location-arrow"></i>등록
+                                </button>
+                            </div>
+                        </div>
+                        <p></p>
                     </div>
                     <form action="#">
                         <textarea id="input-comment" placeholder="댓글을 등록해 주세요"></textarea>
@@ -201,26 +210,30 @@
                 <div class="book__details__review">
                     {% for comment in comments %}
                         <div class="book__review__item">
-                            <div class="book__review__item__pic">
-                                <i class="fa fa-user fa-5x" aria-hidden="true"></i>
-                            </div>
-                            <div class="book__review__item__text">
-                                <h6>{{ comment.nickname }}
+                        <div class="book__review__item__pic">
+                            <i class="fa fa-user fa-5x" aria-hidden="true"></i>
+                        </div>
+                        <div class="book__review__item__text">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <h6>{{ comment.nickname }}</h6>
+                                </div>
+                                <div class="col-lg-1">
                                     {% if comment.userId == user_info.userId %}
                                         <button type="button" class="btn-sm btn-outline-danger"
                                                 onclick="delete_comment('{{ comment.comment_id }}')">삭제
                                         </button>
                                     {% endif %}
-                                </h6>
+                                </div>
                                 <p>{{ comment.comment }}</p>
-
                             </div>
                         </div>
+                        <p></p>
                     {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
 <!-- Body Section End -->
 
