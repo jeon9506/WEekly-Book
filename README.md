@@ -10,7 +10,7 @@
 
 ### 페이지별 기능
 
-![로그인png](file://C:\Users\taekg\OneDrive\개발\카카오톡%20받은%20파일\로그인.png)
+![로그인](https://user-images.githubusercontent.com/32161395/149155482-113eaacd-9d4b-4c99-ae08-71d57d4d08c6.png)
 
 ### API 테이블
 
