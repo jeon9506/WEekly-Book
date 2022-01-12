@@ -11,8 +11,7 @@
 ### 페이지별 기능
 
 ![로그인](https://user-images.githubusercontent.com/32161395/149157418-5c8fc416-2478-40ac-88d3-88adce8aab29.png)
-
-##### 로그인 페이지(최초 접속 시)
+#### 로그인 페이지(최초 접속 시)
 
 - 로그인, 회원가입 기능
 - 회원 검사
@@ -20,36 +19,36 @@
 - ID/PW 틀릴 시 빨간글씨 또는 alert으로 표시
 - '회원가입'버튼 클릭 시 회원가입 페이지로 이동
 
-![회원가입](https://user-images.githubusercontent.com/32161395/149157456-c9f3c844-fdd8-4bde-a3fa-9a56ba643c5c.png)
 
-##### 회원가입 페이지(회원 가입 버튼 클릭 시)
+![회원가입](https://user-images.githubusercontent.com/32161395/149157456-c9f3c844-fdd8-4bde-a3fa-9a56ba643c5c.png)
+#### 회원가입 페이지(회원 가입 버튼 클릭 시)
 
 - 회원가입 기능
 - 회원가입 시 아이디 중복체크 (id로 체크)
 - 이름, 아이디, 패스워드(패스워드 확인 검사)
 - 회원 가입 성공 시 alert창 띄우고 로그인 페이지로 이동
 
-![메인페이지](https://user-images.githubusercontent.com/32161395/149157504-dc64e8a0-47a9-4249-859f-068207c83e37.png)
 
-##### 메인 페이지 - 크롤링(스크래핑)
+![메인페이지](https://user-images.githubusercontent.com/32161395/149157504-dc64e8a0-47a9-4249-859f-068207c83e37.png)
+#### 메인 페이지 - 크롤링(스크래핑)
 
 - 상위 25위 도서정보 스크래핑 후 도서정보 저장(네이버 베스트셀러)
 - 신규 도서 추가
 - 리스트 형식으로 조회
 - 이미지, 타이틀 클릭 시 상세 페이지로 이동
 
-![상세페이지](https://user-images.githubusercontent.com/32161395/149157520-263a3cdb-dc6b-4bee-b3de-1bb616b10a88.png)
 
-##### 상세페이지
+![상세페이지](https://user-images.githubusercontent.com/32161395/149157520-263a3cdb-dc6b-4bee-b3de-1bb616b10a88.png)
+#### 상세페이지
 
 - 도서상세 정보 스크래핑
 - 선택한 도서 관심등록,취소 기능
 - 댓글 리스트 + 삭제 버튼을 보여줌
 - 본인이 등록한 댓글 정보만 삭제가능
 
-![마이페이지](https://user-images.githubusercontent.com/32161395/149157546-f053425d-cdf7-4fa5-9aeb-7e65bccff5b8.png)
 
-##### 마이 페이지
+![마이페이지](https://user-images.githubusercontent.com/32161395/149157546-f053425d-cdf7-4fa5-9aeb-7e65bccff5b8.png)
+#### 마이 페이지
 
 - 사용자가 관심등록한 도서목록을 카드 형식으로 표시
 - 사용자가 이미지와 타이틀 클릭 시 관련도서의 상세정보 조회
