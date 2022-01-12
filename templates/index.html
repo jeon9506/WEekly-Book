@@ -17,6 +17,24 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+
+   <style>
+
+       .book_image {
+           margin-right: 30px;
+       }
+
+       .book_title {
+           font-size: 20px;
+       }
+
+       .desc_title {
+           font-weight: bold;
+
+       }
+
+   </style>
+
 </head>
 <script>
     function logout() {
@@ -59,12 +77,12 @@
                                     <img class="book_image" src='{{ book.book_img }}'
                                          alt="Generic placeholder image">
                                     <div class="media-body">
-                                        <p><a href="/viewDetail?bid={{ book.bid }}"
-                                              class="book_title"> {{ book.title }}. </a></p>
-                                        <p class="book_author"> 저자: {{ book.author }}
+                                        <a href="/viewDetail?bid={{ book.bid }}"
+                                              class="book_title"> {{ book.title }}. </a>
+                                        <p class="book_author"> <span style="font-weight: bold">저자 :</span>  {{ book.author }}
                                             <span class="bar">|</span>
-                                            <span class="book_publisher">출판사 : {{ book.publisher }}</span></p>
-                                        <p class="book_description"> <span class="desc_title"> 개요 </span> : {{ book.desc }} </p>
+                                            <span class="book_publisher"> <span style="font-weight: bold">출판사 :</span> {{ book.publisher }}</span></p>
+                                        <p class="book_description"> <span class="desc_title"> 개요 :</span>  {{ book.desc }} </p>
                                     </div>
                                 </div>
                             {% endfor %}
