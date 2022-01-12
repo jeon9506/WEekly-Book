@@ -18,6 +18,8 @@
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
+    <!-- font-awesome icon -->
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <style>
         .wrap {
             width: 1200px;
@@ -45,7 +47,10 @@
             window.location.href = "/login"
         }
 
-        function delBookmark(bookId, userId){
+        function delBookmark(bookId, bookTitle, userId){
+            if (!confirm("'"+bookTitle+"'을(를) 관심 목록에서 삭제하시겠습니까?"))
+                return;
+
             $.ajax({
                 type: "POST",
                 url: "/delBookmark",
@@ -67,14 +72,14 @@
     <!-- Header Section Begin -->
     <header class="header">
         <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand" style="margin-left: 10px">
-                <img src="static/img/logo.svg" onclick="window.location.href= '/'">
+            <div class="navbar-brand" style="margin-left: 10px;width: 10%">
+                <img src="static/img/logo.jpg" onclick="window.location.href= '/'" style="cursor:pointer">
             </div>
 
             <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
-                {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-                <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394">MyPage &nbsp;&nbsp;&nbsp;</a>
-                <a onclick="logout()" style="font-weight: bold;color:#4c5394">Logout</a>
+                <i class="fa fa-user-circle" aria-hidden="true"></i> {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
+                <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394"><i class="fa fa-paper-plane" aria-hidden="true"></i> MyPage &nbsp;&nbsp;&nbsp;</a>
+                <a onclick="logout()" style="font-weight: bold;color:#4c5394"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             </div>
         </nav>
     </header>
@@ -87,13 +92,13 @@
             <div id="cards-box" class="card-columns">
                 {% for bookrow in userBookmarkList %}
                 <div class="card" style="border: solid #bee5eb; border-radius: 15px;">
-                    <img src="{{bookrow.imgsrc}}" style="width: 150px; margin: auto; display: block; padding-top: 15px;"
+                    <img src="{{bookrow.imgsrc}}" style="cursor:pointer; width: 150px; margin: auto; display: block; padding-top: 15px;"
                     onclick='window.open("{{bookrow.booklink}}")'/>
                     <div class="card-body">
                         <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
                         <p style="margin-top: 15px">저자/ 출판사 &nbsp;: &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
                         <p class="card-text">{{bookrow.desc}}</p>
-                        <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제</button>
+                        <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{ bookrow.title }}','{{user_info.userId}}')">삭제</button>
                     </div>
                 </div>
                 {% endfor %}
