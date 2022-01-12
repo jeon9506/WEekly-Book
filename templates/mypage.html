@@ -4,23 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../static/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../static/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../static/css/style.css" type="text/css">
-
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
-
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
     <style>
         .wrap {
@@ -33,6 +29,12 @@
         $(document).ready(function () {
             //showBookmarkList();
         });
+
+        function logout() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
 
         function delBookmark(id, title){
             alert(id);
@@ -64,7 +66,7 @@
 
         <div style="margin-left:fill;color:white;margin-right: 10px">
             {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-            <a onclick="my_page()">마이페이지 &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
             <a onclick="logout()">로그아웃</a>
         </div>
     </nav>
@@ -77,10 +79,10 @@
         <div id="cards-box" class="card-columns">
             {% for bookrow in userBookmarkList %}
             <div class="card" style="border: solid #bee5eb; border-radius: 15px;">
-                <img src="{{bookrow.imgsrc}}" style="width: 150px; margin: auto; display: block"
+                <img src="{{bookrow.imgsrc}}" style="width: 150px; margin: auto; display: block; padding-top: 15px;"
                 onclick='window.open("{{bookrow.booklink}}")'/>
                 <div class="card-body">
-                    <a target="_blank" href="{{row.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
+                    <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
                     <p>저자 : {{bookrow.author}}</p>
                     <p class="card-text">{{bookrow.desc}}</p>
                     <p>{{bookrow.id}}</p>

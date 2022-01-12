@@ -98,8 +98,90 @@ def check_dup():
 
 @app.route('/main')
 def main():
+
     # 로그인 정보 저장 (토큰)
     token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.user.find_one({"userId": payload["id"]})
+        return render_template('index.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/create')
+def create():
+    token_receive = request.cookies.get('mytoken')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
+
+    soup = BeautifulSoup(data.text, 'html.parser')
+
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = db.user.find_one({"userId": payload["id"]})
+
+
+    booklist = soup.select('#section_bestseller > ol > li')
+    count = 0
+    desc = []
+    for index in range(0, 25):
+        desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
+        desc_total = (desc_data[4:100] + "...")
+        desc.append(desc_total)
+        for i in range(len(desc)):
+            desc[i] = desc[i].replace('\n', '')
+
+    # 스크래핑 한걸 리스트에 담는다
+    scrappingBookList = [];
+
+    for book in booklist:
+        booklink = book.select_one('a')['href']
+        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
+        title = book.select_one("dl > dt > a").text
+        author = book.select_one("dl > dd > a").text
+        imgsrc = book.select_one('div> div > a > img')['src']
+        #publisher = book.select_one(' dl > dd.txt_block').text
+        # section_bestseller > ol > li:nth-child(1) > dl > dd.txt_block > a.N\=a\:bel\.publisher
+        doc = {
+            'title': title,
+            'author': author,
+            'desc': desc[count],
+            'imgsrc': imgsrc,
+            'booklink': booklink,
+            'bid': bid,
+        }
+        count += 1
+        scrappingBookList.append(doc)
+
+    # 크롤링한 도서관련 데이터 books 테이블에 삽입한다.(imgsrc랑 booklink는 화면에 보여주기만 할 거라서 삽입안해도 된다.)
+    for row in scrappingBookList:
+        bid = row['bid']
+        title = row['title']
+        author = row['author']
+        desc = row['desc']
+        #print(bid, title, author, desc)
+        #print('~~행:', row)
+        doc = {
+            'bid':bid,
+            'title':title,
+            'author':author,
+            'desc':desc
+        }
+        bookinfo = db.books.find_one({'bid':bid})
+        if bookinfo is None:    # bookinfo가 없으면 삽입해야지
+            print('~~ 같지않음 : ',bid)
+            db.books.insert_one(row)
+
+    doc = {
+        'userId':user_info['userId'],
+        'bookId':'61dd9d739f223e7b37dfcfc4'
+    }
+    print(doc)
+    #db.bookmarks.insert_one(doc)
+
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
@@ -122,6 +204,7 @@ def mypage():
 
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = db.user.find_one({"userId": payload["id"]})
+    print('~~~ userId:', user_info['userId'])
 
     booklist = soup.select('#section_bestseller > ol > li')
     count = 0
@@ -138,46 +221,56 @@ def mypage():
 
     for book in booklist:
         booklink = book.select_one('a')['href']
-        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
+        img_tag = book.select_one('a > img')
         title = book.select_one("dl > dt > a").text
         author = book.select_one("dl > dd > a").text
         imgsrc = book.select_one('div> div > a > img')['src']
+        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
         doc = {
             'title': title,
             'author': author,
             'desc': desc[count],
             'imgsrc': imgsrc,
             'booklink': booklink,
-            'bid': bid
+            'bid':bid
         }
         count += 1
         scrappingBookList.append(doc)
 
-    #for row in scrappingBookList:
-    #    print('~~행:', row)
+    for row in scrappingBookList:
+        print('~~행:', row)
 
     # db에 있는 정보를 가져옴
     bookmarks = list(db.bookmarks.find({}))
     books = list(db.books.find({}))
+    # print('~~~ bookmarks: ', bookmarks)
+    # print('~~~ user_info: ',user_info)
+    # print('~~~ books : ', books)
 
-    uBookmarkList = [] # 접속한 사용자가 북마크한 책을 넣어준다
+    usrBookmarkList = []
+    # 사용자가 북마크한 책
     for book in books:
         for mark in bookmarks:
             if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
-                uBookmarkList.append(book)
+                usrBookmarkList.append(book)
+                #print('~~~ 접속한 사용자가 book 마크한 책 : ', book)
+
+    #print('~~~ usrBookmarkList: ', usrBookmarkList)  # 접속한 사용자가 북마크한 책의 리스트
 
     # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
     # 추려준다.
     userBookmarkList = []
     for sblist in scrappingBookList:
-        for blist in uBookmarkList:
+        for blist in usrBookmarkList:
             if sblist['title'] == blist['title']:
                 sblist['id'] = str(blist['_id'])
                 userBookmarkList.append(sblist)
 
+    print('~~~ userBookmarkList : ', userBookmarkList)
     # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
     for row in userBookmarkList:
-        print('~~~ 최종 : ', row)
+        print('최종 : ', row)
+
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -203,11 +296,11 @@ def view_detail():
         user_info = db.user.find_one({"userId": payload["id"]})
 
         # 책 크롤링 정보
-        bid = request.args.get("bid")
+        book_id = request.args.get("book_id")
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-        data = requests.get(f'https://book.naver.com/bookdb/book_detail.naver?bid={bid}', headers=headers)
+        data = requests.get(f'https://book.naver.com/bookdb/book_detail.naver?bid={book_id}', headers=headers)
 
         soup = BeautifulSoup(data.text, 'html.parser')
 
@@ -242,18 +335,14 @@ def view_detail():
             comment['comment_id'] = str(comment["_id"])
             # print(comment['comment_id'])
 
-        # 도서 정보
-        books = db.books.find_one({'bid': bid})
+        # 관심등록 여부정보
+        bookmarks = list(db.bookmarks.find({}))
 
-        # 즐겨찾기 정보
-        bookmarks = ''
-        if books is not None :
-            bookmarks['bookId'] = str(books["_id"])
-            bookmarks = db.bookmarks.find_one({'userId': bid, 'bookId': bookmarks['bookId']})
-            print(user_info)
-            print(bookmarks)
+        for bookmark in bookmarks :
+            bookmark['bookmark_id'] = str(bookmark["_id"])
+            print(bookmark['bookmark_id'])
 
-        return render_template("detailBook.html", bid=bid, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
+        return render_template("detailBook.html", book_id=book_id, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -264,13 +353,13 @@ def view_detail():
 def create_comment():
     user_id_receive = request.form['user_id_give']
     nickname_receive = request.form['nickname_give']
-    bid_receive = request.form['bid_give']
+    book_id_receive = request.form['book_id_give']
     comment_receive = request.form['comment_give']
 
     doc = {
         'userId' : user_id_receive,
         'nickname': nickname_receive,
-        'bid' : bid_receive,
+        'bookId' : book_id_receive,
         'comment': comment_receive
     }
     db.comments.insert_one(doc)
@@ -294,11 +383,14 @@ def delete_comment():
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
 
+# 북마크 삭제
 @app.route('/delBookmark', methods=['POST'])
 def delBookmark():
    bookId_receive = request.form['bookId_give'];
    bookTitle_receive = request.form['bookTitle_give'];
+   # 북마크테이블을 삭제시켜야함
 
+   print('~~~ 삭제 : ',bookId_receive)
    db.bookmarks.delete_one({'bookId': bookId_receive})
 
    return jsonify({'msg': bookTitle_receive+'이(가) 삭제되었습니다.'});

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+</head>
+<script>
+    function logout() {
+        $.removeCookie('mytoken', {path: '/'});
+        alert('로그아웃!')
+        window.location.href = "/login"
+    }
+</script>
+<body>
+
+
+<!-- Header Section Begin -->
+<header class="header">
+    <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand" style="margin-left: 10px">
+            <img src="static/img/logo.svg">
+        </div>
+
+        <div style="margin-left:fill;color:white;margin-right: 10px">
+            {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
+            <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()">로그아웃</a>
+        </div>
+    </nav>
+</header>
+<!-- Header End -->
+
+<!-- Book Section Begin -->
+<section class="spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="section-title">
+                                <h4>뉴스</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="section-contents">
+                                <a onclick="window.location.href='viewDetail?bid=20937219'">불편한 편의점 보기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- News Section End -->
+
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-8">
+                <p>b_2조</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+</body>
+
+</html>
