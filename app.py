@@ -257,29 +257,39 @@ def view_detail():
         soup = BeautifulSoup(data.text, 'html.parser')
 
         book_name = ''
-        book_img_url = ''
-        author = ''
-        book_score = ''
-        book_contents = ''
-
         try:
             book_name = soup.select_one('#container > div.spot > div.book_info > h2 > a').text.strip()
-            book_img_url = soup.select_one('#container > div.spot > div.book_info > div.thumb.type_end > div > a > img')["src"]
-            author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2) > a.N\=a\:bil\.publisher').text.strip()
-            book_score = soup.select_one('#txt_desc_point > strong:nth-child(2) > span').previous_element.strip()
-            book_contents = soup.select_one('#bookIntroContent')
-            print('haha')
-            print(book_contents)
-        except AttributeError as e :
-            if book_name == None :
+        except AttributeError as e:
+            if book_name == None:
                 book_name = ''
-            if book_img_url == None :
+
+        book_img_url = ''
+        try:
+            book_img_url = soup.select_one('#container > div.spot > div.book_info > div.thumb.type_end > div > a > img')["src"]
+        except AttributeError as e:
+            if book_img_url == None:
                 book_img_url = ''
-            if author == None :
+
+        author = ''
+        try:
+            author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2)').text.strip()
+        except AttributeError as e:
+            if author == None:
                 author = ''
-            if book_score == None :
+        print('author : ' + author)
+
+        book_score = ''
+        try:
+            book_score = soup.select_one('#txt_desc_point > strong:nth-child(2) > span').previous_element.strip()
+        except AttributeError as e:
+            if book_score == None:
                 book_score = ''
-            if book_contents == None :
+
+        book_contents = ''
+        try:
+            book_contents = soup.select_one('#bookIntroContent')
+        except AttributeError as e:
+            if book_contents == None:
                 book_contents = ''
 
         #print(book_name, book_img_url, author, public_date, book_score, book_contents)
@@ -292,7 +302,7 @@ def view_detail():
             'book_score': book_score,
             'book_content': book_contents
         }
-        print(book_info)
+        # print(book_info)
 
         # 댓글 정보(comments)
         comments = list(db.comments.find({'bid': bid}))
