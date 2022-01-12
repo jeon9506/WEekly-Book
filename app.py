@@ -157,75 +157,76 @@ def main():
 #mypage로 이동하기
 @app.route('/mypage')
 def mypage():
+
     token_receive = request.cookies.get('mytoken')
-
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
-
-    soup = BeautifulSoup(data.text, 'html.parser')
-
-    booklist = soup.select('#section_bestseller > ol > li')
-    count = 0
-    desc = []
-    for index in range(0, 25):
-        desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
-        desc_total = (desc_data[4:100] + "...")
-        desc.append(desc_total)
-        for i in range(len(desc)):
-            desc[i] = desc[i].replace('\n', '')
-
-    # 스크래핑 한걸 리스트에 담는다
-    scrappingBookList = [];
-
-    for book in booklist:
-        booklink = book.select_one('a')['href']
-        bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
-        title = book.select_one("dl > dt > a").text
-        author = book.select_one("dl > dd > a").text
-        publisher = book.select_one("dl > dd").text.split('|')[1].strip()
-        imgsrc = book.select_one('div> div > a > img')['src']
-        doc = {
-            'title': title,
-            'author': author,
-            'desc': desc[count],
-            'imgsrc': imgsrc,
-            'booklink': booklink,
-            'bid': bid,
-            'publisher':publisher
-        }
-        count += 1
-        scrappingBookList.append(doc)
-
-    #for row in scrappingBookList:
-    #    print('~~행:', row)
-
-    # db에 있는 정보를 가져옴
-    bookmarks = list(db.bookmarks.find({}))
-    books = list(db.books.find({}))
-
-    uBookmarkList = [] # 접속한 사용자가 북마크한 책을 넣어준다
-    for book in books:
-        for mark in bookmarks:
-            if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
-                uBookmarkList.append(book)
-
-    # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
-    # 추려준다.
-    userBookmarkList = []
-    for sblist in scrappingBookList:
-        for blist in uBookmarkList:
-            if sblist['title'] == blist['title']:
-                sblist['id'] = str(blist['_id'])
-                userBookmarkList.append(sblist)
-
-    # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
-    for row in userBookmarkList:
-        print('~~~ 최종 : ', row)
-
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
+
+        soup = BeautifulSoup(data.text, 'html.parser')
+
+        booklist = soup.select('#section_bestseller > ol > li')
+        count = 0
+        desc = []
+        for index in range(0, 25):
+            desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
+            desc_total = (desc_data[4:100] + "...")
+            desc.append(desc_total)
+            for i in range(len(desc)):
+                desc[i] = desc[i].replace('\n', '')
+
+        # 스크래핑 한걸 리스트에 담는다
+        scrappingBookList = [];
+
+        for book in booklist:
+            booklink = book.select_one('a')['href']
+            bid = book.select_one('a')['href'].split('?')[1].split('=')[1]
+            title = book.select_one("dl > dt > a").text
+            author = book.select_one("dl > dd > a").text
+            publisher = book.select_one("dl > dd").text.split('|')[1].strip()
+            imgsrc = book.select_one('div> div > a > img')['src']
+            doc = {
+                'title': title,
+                'author': author,
+                'desc': desc[count],
+                'imgsrc': imgsrc,
+                'booklink': booklink,
+                'bid': bid,
+                'publisher':publisher
+            }
+            count += 1
+            scrappingBookList.append(doc)
+
+        #for row in scrappingBookList:
+        #    print('~~행:', row)
+
+        # db에 있는 정보를 가져옴
+        bookmarks = list(db.bookmarks.find({}))
+        books = list(db.books.find({}))
+
+        uBookmarkList = [] # 접속한 사용자가 북마크한 책을 넣어준다
+        for book in books:
+            for mark in bookmarks:
+                if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
+                    uBookmarkList.append(book)
+
+        # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
+        # 추려준다.
+        userBookmarkList = []
+        for sblist in scrappingBookList:
+            for blist in uBookmarkList:
+                if sblist['title'] == blist['title']:
+                    sblist['id'] = str(blist['_id'])
+                    userBookmarkList.append(sblist)
+
+        # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
+        # for row in userBookmarkList:
+        #     print('~~~ 최종 : ', row)
+
         return render_template('mypage.html', user_info=user_info, userBookmarkList=userBookmarkList)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
