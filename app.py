@@ -281,7 +281,7 @@ def view_detail():
         print(book_info)
 
         # 댓글 정보(comments)
-        comments = list(db.comments.find({}))
+        comments = list(db.comments.find({'bid': bid}))
 
         for comment in comments :
             comment['comment_id'] = str(comment["_id"])
@@ -289,7 +289,7 @@ def view_detail():
         # 도서 정보(books)
         books = db.books.find_one({'bid': bid})
         books["bookId"] = str(books["_id"])
-        print(books)
+        # print(books)
 
         # 즐겨찾기 정보(bookmarks)
         # 즐겨찾기 테이블에서 userId, bookId를 조건으로 조회
