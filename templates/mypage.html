@@ -26,10 +26,6 @@
     </style>
 
     <script>
-        $(document).ready(function () {
-            //showBookmarkList();
-        });
-
         function logout() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
@@ -37,7 +33,6 @@
         }
 
         function delBookmark(bookId, userId){
-            alert(userId +' '+ bookId);
             $.ajax({
                 type: "POST",
                 url: "/delBookmark",
