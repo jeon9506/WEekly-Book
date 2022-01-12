@@ -106,10 +106,10 @@
             <img src="static/img/logo.svg" onclick="window.location.href= '/'">
         </div>
 
-        <div style="margin-left:fill;color:white;margin-right: 10px">
+        <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
             {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-            <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
-            <a onclick="logout()">로그아웃</a>
+            <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394">MyPage &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()" style="font-weight: bold;color:#4c5394">Logout</a>
         </div>
     </nav>
 </header>
@@ -237,13 +237,17 @@
 <!-- Body Section End -->
 
 <!-- Footer Section Begin -->
-<footer class="footer colorBlack">
+<footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
             </div>
             <div class="col-lg-8">
-                <p>b_2조</p>
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
+                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
         </div>
     </div>

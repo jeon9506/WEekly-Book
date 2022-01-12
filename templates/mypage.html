@@ -19,30 +19,9 @@
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
     <style>
-
-        .body-wrapper{
-            min-height: 100%;
-            position: relative;
-        }
-
-        .section-wrapper{
-            padding-top: 100px;
-	        padding-bottom: 42%;
-        }
-
         .wrap {
             width: 1200px;
             margin: auto;
-            display: block;
-        }
-
-        .bookmark{
-            border: solid lightblue 2px;
-            border-radius: 10px;
-            font-size: 38px;
-            text-align: center;
-            padding: 35px;
-            margin-bottom: 20px;
         }
     </style>
 
@@ -72,71 +51,62 @@
 </head>
 
 <body>
-    <!-- Header Section Begin -->
-    <div class="body-wrapper">
-        <header class="header">
-            <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand" style="margin-left: 10px">
-                    <img src="static/img/logo.svg" onclick="window.location.href= '/'">
-                </div>
 
-                <div style="margin-left:fill;color:white;margin-right: 10px">
-                    {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-                    <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
-                    <a onclick="logout()">로그아웃</a>
-                </div>
-            </nav>
-        </header>
-        <!-- Header End -->
+<!-- Header Section Begin -->
+<header class="header">
+    <nav class="navbar is-fixed-top colorBlack" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand" style="margin-left: 10px">
+            <img src="static/img/logo.svg" onclick="window.location.href= '/'">
+        </div>
 
-        <!-- News Section Begin -->
-        <section class="section-wrapper">
-            <div class="wrap">
-                <p class="bookmark">★ 관심 도서 목록 ★</p>
-                <div id="cards-box" class="card-columns">
-                    {% for bookrow in userBookmarkList %}
-                        <div class="card" style="border: solid #b2def2; border-radius: 15px;">
-                            <img src="{{ bookrow.imgsrc }}"
-                                 style="cursor:pointer; width: 150px; margin: auto; display: block; padding-top: 15px;"
-                                 onclick='window.open("{{ bookrow.booklink }}")'/>
-                            <div class="card-body">
-                                <a target="_blank" href="{{ bookrow.booklink }}"
-                                   class="card-title">{{ bookrow.title }}</a><br/>
-                                <p style="margin-top: 15px">저자/ 출판사 &nbsp;:
-                                    &nbsp;{{ bookrow.author }}/ {{ bookrow.publisher }}</p>
-                                <p class="card-text">{{ bookrow.desc }}</p>
-                                <button type="button" class="delBtn btn btn-primary"
-                                        onclick="delBookmark('{{ bookrow.id }}','{{ user_info.userId }}')">삭제
-                                </button>
-                            </div>
-                        </div>
-                    {% endfor %}
+        <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
+            {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
+            <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394">MyPage &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()" style="font-weight: bold;color:#4c5394">Logout</a>
+        </div>
+    </nav>
+</header>
+<!-- Header End -->
 
+<!-- News Section Begin -->
+<section class="spad">
+    <div class="wrap">
+        <div id="cards-box" class="card-columns">
+            {% for bookrow in userBookmarkList %}
+            <div class="card" style="border: solid #bee5eb; border-radius: 15px;">
+                <img src="{{bookrow.imgsrc}}" style="width: 150px; margin: auto; display: block; padding-top: 15px;"
+                onclick='window.open("{{bookrow.booklink}}")'/>
+                <div class="card-body">
+                    <a target="_blank" href="{{bookrow.booklink}}" class="card-title">{{bookrow.title}}</a><br/>
+                    <p style="margin-top: 15px">저자/ 출판사 &nbsp;: &nbsp;{{bookrow.author}}/ {{ bookrow.publisher }}</p>
+                    <p class="card-text">{{bookrow.desc}}</p>
+                    <button type="button" class="delBtn btn btn-primary" onclick="delBookmark('{{bookrow.id}}','{{user_info.userId}}')">삭제</button>
                 </div>
             </div>
-        </section>
-        <!-- News Section End -->
+            {% endfor %}
 
-        <!-- Footer Section Begin -->
-        <footer class="footer" style="background-color: #b2def2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                    </div>
-                    <div class="col-lg-8">
-                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                            All rights reserved | This template is made with <i class="fa fa-heart"
-                                                                                aria-hidden="true"></i> by
-                            <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Footer Section End -->
+        </div>
     </div>
+</section>
+<!-- News Section End -->
 
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-8">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
+                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
 </body>
 
 </html>

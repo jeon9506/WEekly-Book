@@ -18,22 +18,22 @@
     <!-- Css Styles -->
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
-   <style>
+    <style>
 
-       .book_image {
-           margin-right: 30px;
-       }
+        .book_image {
+            margin-right: 30px;
+        }
 
-       .book_title {
-           font-size: 20px;
-       }
+        .book_title {
+            font-size: 20px;
+        }
 
-       .desc_title {
-           font-weight: bold;
+        .desc_title {
+            font-weight: bold;
 
-       }
+        }
 
-   </style>
+    </style>
 
 </head>
 <script>
@@ -51,10 +51,10 @@
             <img src="static/img/logo.svg" onclick="window.location.href= '/'">
         </div>
 
-        <div style="margin-left:fill;color:white;margin-right: 10px">
+        <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
             {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-            <a onclick="window.location.href = '/mypage'">마이페이지 &nbsp;&nbsp;&nbsp;</a>
-            <a onclick="logout()">로그아웃</a>
+            <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394">MyPage &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()" style="font-weight: bold;color:#4c5394">Logout</a>
         </div>
     </nav>
 </header>
@@ -67,31 +67,33 @@
             <div class="col-lg-12">
                 <div class="">
                     <p class="row">
-                        <div class="section-title">
-                            <h5> 이번주 베스트셀러 </h5>
-                        </div>
-                    <p>
-                        <div class="book_list">
-                            {% for book in books %}
-                                <div class="media">
-                                    <img class="book_image" src='{{ book.book_img }}'
-                                         alt="Generic placeholder image">
-                                    <div class="media-body">
-                                        <a href="/viewDetail?bid={{ book.bid }}"
-                                              class="book_title"> {{ book.title }}. </a>
-                                        <p class="book_author"> <span style="font-weight: bold">저자 :</span>  {{ book.author }}
-                                            <span class="bar">|</span>
-                                            <span class="book_publisher"> <span style="font-weight: bold">출판사 :</span> {{ book.publisher }}</span></p>
-                                        <p class="book_description"> <span class="desc_title"> 개요 :</span>  {{ book.desc }} </p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </p>
+                    <div class="section-title">
+                        <h5> 이번주 베스트셀러 </h5>
                     </div>
+                    <p>
+                    <div class="book_list">
+                        {% for book in books %}
+                            <div class="media">
+                                <img class="book_image" src='{{ book.book_img }}'
+                                     alt="Generic placeholder image">
+                                <div class="media-body">
+                                    <a href="/viewDetail?bid={{ book.bid }}"
+                                       class="book_title"> {{ book.title }}. </a>
+                                    <p class="book_author"><span style="font-weight: bold">저자 :</span> {{ book.author }}
+                                        <span class="bar">|</span>
+                                        <span class="book_publisher"> <span
+                                                style="font-weight: bold">출판사 :</span> {{ book.publisher }}</span></p>
+                                    <p class="book_description"><span class="desc_title"> 개요 :</span> {{ book.desc }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 <!-- News Section End -->
@@ -103,7 +105,11 @@
             <div class="col-lg-4">
             </div>
             <div class="col-lg-8">
-                <p></p>
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
+                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
         </div>
     </div>
