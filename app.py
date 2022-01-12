@@ -257,7 +257,6 @@ def view_detail():
         book_name = ''
         book_img_url = ''
         author = ''
-        public_date = ''
         book_score = ''
         book_contents = ''
 
@@ -265,7 +264,6 @@ def view_detail():
             book_name = soup.select_one('#container > div.spot > div.book_info > h2 > a').text.strip()
             book_img_url = soup.select_one('#container > div.spot > div.book_info > div.thumb.type_end > div > a > img')["src"]
             author = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2) > a.N\=a\:bil\.publisher').text.strip()
-            public_date = soup.select_one('#container > div.spot > div.book_info > div.book_info_inner > div:nth-child(2)').previous_element.strip()
             book_score = soup.select_one('#txt_desc_point > strong:nth-child(2) > span').previous_element.strip()
             book_contents = soup.select_one('#bookIntroContent')
             print('haha')
@@ -277,8 +275,6 @@ def view_detail():
                 book_img_url = ''
             if author == None :
                 author = ''
-            if public_date == None :
-                public_date = ''
             if book_score == None :
                 book_score = ''
             if book_contents == None :
@@ -291,7 +287,6 @@ def view_detail():
             'book_name': book_name,
             'book_img_url': book_img_url,
             'author': author,
-            'public_date': public_date,
             'book_score': book_score,
             'book_content': book_contents
         }

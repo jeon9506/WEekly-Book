@@ -140,7 +140,6 @@
                     <div class="book__details__text">
                         <div class="book__details__title">
                             <h3>{{ book_info.book_name }}</h3>
-                            <span>{{ book_info.author }} ／ {{ book_info.author }}</span>
                         </div>
                         <div class="book__details__rating">
                             <div class="rating">
@@ -151,12 +150,12 @@
                         </div>
                         <div class="book__details__widget">
                             <div class="row">
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-8 col-md-8">
                                     <ul>
-                                        <li><span>출판일자 : </span> {{ book_info.public_date }}</li>
+                                        <li><span>저자 / 출판사 : </span> {{ book_info.author }} / {{ book_info.author }}</li>
                                     </ul>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-4 col-md-4">
                                     <ul>
                                         <li><span>평점 : </span> {{ book_info.book_score }}점</li>
                                     </ul>
