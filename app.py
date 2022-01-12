@@ -202,7 +202,7 @@ def view_detail():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
 
-        # 책 크롤링 정보
+        # 책 크롤링
         bid = request.args.get("bid")
 
         headers = {
@@ -223,6 +223,7 @@ def view_detail():
 
         #print(book_name, book_img_url, author, public_date, page, isbn, plate_type, book_score, book_contents)
 
+        # 댓글 정보(book_info)
         book_info = {
             'book_name': book_name,
             'book_img_url': book_img_url,
@@ -234,26 +235,26 @@ def view_detail():
             'book_score': book_score,
             'book_content': book_contents
         }
+        print(book_info)
 
-        # 댓글 정보
+        # 댓글 정보(comments)
         comments = list(db.comments.find({}))
 
         for comment in comments :
             comment['comment_id'] = str(comment["_id"])
-            # print(comment['comment_id'])
 
-        # 도서 정보
+        # 도서 정보(books)
         books = db.books.find_one({'bid': bid})
+        books["bookId"] = str(books["_id"])
+        print(books)
 
-        # 즐겨찾기 정보
-        bookmarks = ''
-        if books is not None :
-            bookmarks['bookId'] = str(books["_id"])
-            bookmarks = db.bookmarks.find_one({'userId': bid, 'bookId': bookmarks['bookId']})
-            print(user_info)
-            print(bookmarks)
+        # 즐겨찾기 정보(bookmarks)
+        # 즐겨찾기 테이블에서 userId, bookId를 조건으로 조회
+        bookmarks = db.bookmarks.find_one({'userId': user_info['userId'], 'bookId': books["bookId"]})
+        # if books is not None :
+        print(bookmarks)
 
-        return render_template("detailBook.html", bid=bid, book_info=book_info, user_info=user_info, comments=comments, bookmarks=bookmarks)
+        return render_template("detailBook.html", bid=bid, user_info=user_info, book_info=book_info, books= books, comments=comments, bookmarks=bookmarks)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -294,14 +295,35 @@ def delete_comment():
 
     return jsonify({'msg':'댓글이 삭제되었습니다!'})
 
+# 북마크 등록(Create)
+@app.route('/createBookmark', methods=['POST'])
+def save_word():
+    user_id_receive = request.form["user_id_give"]
+    book_id_receive = request.form["book_id_give"]
+
+    doc = {
+        "userId": user_id_receive,
+        "bookId": book_id_receive
+    }
+    db.bookmarks.insert_one(doc)
+
+    return jsonify({'result': 'success', 'msg': '관심등록되었습니다!'})
+
+# 북마크 삭제(Delete)
 @app.route('/delBookmark', methods=['POST'])
 def delBookmark():
-   bookId_receive = request.form['bookId_give'];
-   bookTitle_receive = request.form['bookTitle_give'];
+    user_id_receive = request.form['user_id_give']
+    book_id_receive = request.form['book_id_give']
 
-   db.bookmarks.delete_one({'bookId': bookId_receive})
+    print(user_id_receive, book_id_receive)
+    doc = {
+        "userId": user_id_receive,
+        "bookId": book_id_receive
+    }
 
-   return jsonify({'msg': bookTitle_receive+'이(가) 삭제되었습니다.'});
+    db.bookmarks.delete_one(doc)
+
+    return jsonify({'msg': '관심취소되었습니다!'})
 
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)
