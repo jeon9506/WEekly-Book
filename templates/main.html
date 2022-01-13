@@ -27,14 +27,20 @@
     <meta property="og:image" content="../static/img/logo.jpg"/>
     <link rel="shortcut icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
     <style>
+        * {
+          font-family: 'Poor Story', cursive;
+        }
 
         .book_image {
             margin-right: 30px;
         }
 
         .book_title {
-            font-size: 20px;
+            font-size: 20px; font-family: 'Poor Story', cursive;
         }
 
         .desc_title {
@@ -93,11 +99,11 @@
                                 <div class="media-body">
                                     <a href="/viewDetail?bid={{ book.bid }}"
                                        class="book_title"> {{ book.title }}. </a>
-                                    <p class="book_author"><span style="font-weight: bold">저자 :</span> {{ book.author }}
+                                    <p class="book_author" style="font-family: 'Poor Story', cursive"><span style="font-weight: bold">저자 :</span> {{ book.author }}
                                         <span class="bar">|</span>
-                                        <span class="book_publisher"> <span
+                                        <span class="book_publisher" style="font-family: 'Poor Story', cursive"> <span
                                                 style="font-weight: bold">출판사 :</span> {{ book.publisher }}</span></p>
-                                    <p class="book_description"><span class="desc_title"> 개요 :</span> {{ book.desc }}
+                                    <p class="book_description" style="font-family: 'Poor Story', cursive"><span class="desc_title" > 개요 :</span> {{ book.desc }}
                                     </p>
                                 </div>
                             </div>

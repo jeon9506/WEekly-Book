@@ -27,7 +27,15 @@
     <meta property="og:image" content="../static/img/logo.jpg"/>
     <link rel="shortcut icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
     <style>
+
+        * {
+          font-family: 'Poor Story', cursive;
+        }
+
         .wrap {
             width: 1200px;
             margin: auto;
@@ -97,7 +105,7 @@
     <!-- News Section Begin -->
     <section class="section-wrapper">
         <div class="wrap">
-            <p class="bookmark">관심 도서 목록</p>
+            <p class="bookmark" style="font-family: 'Poor Story', cursive">관심 도서 목록</p>
             <div id="cards-box" class="card-columns">
                 <!-- jinja2 템플릿을 이용한 관심 도서 목록 보여주기 -->
                 {% for bookrow in userBookmarkList %}
@@ -106,11 +114,11 @@
                              style="cursor:pointer; width: 150px; margin: auto; display: block; padding-top: 15px;"
                              onclick='window.open("{{ bookrow.booklink }}")'/>
                         <div class="card-body">
-                            <a target="_blank" href="{{ bookrow.booklink }}" class="card-title">{{ bookrow.title }}</a><br/>
-                            <p style="margin-top: 15px">저자/ 출판사 &nbsp;:
+                            <a target="_blank" href="{{ bookrow.booklink }}" class="card-title" style="font-family: 'Poor Story', cursive; font-size: 20px">{{ bookrow.title }}</a><br/>
+                            <p style="margin-top: 15px; font-family: 'Poor Story', cursive">저자/ 출판사 &nbsp;:
                                 &nbsp;{{ bookrow.author }}/ {{ bookrow.publisher }}</p>
-                            <p class="card-text">{{ bookrow.desc }}</p>
-                            <button type="button" class="delBtn btn btn-primary"
+                            <p class="card-text" style="font-family: 'Poor Story', cursive">{{ bookrow.desc }}</p>
+                            <button type="button" class="delBtn btn btn-primary" style="font-family: 'Poor Story', cursive"
                                     onclick="delBookmark('{{ bookrow.id }}','{{ bookrow.title }}','{{ user_info.userId }}')">
                                 삭제
                             </button>
