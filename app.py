@@ -26,22 +26,29 @@ db = client.shareTodayBook
 # 초기화면 로그인 화면으로 이동 함
 @app.route('/')
 def first():
-
+    # 기존 로그인 정보가 있는지 확인하기 위해 토큰에 있는 쿠키정보를 받아옴
     token_receive = request.cookies.get('mytoken')
+
+    # 조건문을 통해 None이 아니면 main 으로 이동
     if(token_receive is not None):
         try:
             return redirect(url_for("main"))
+
+        # 쿠키시간이 만료하거나 정보가 없을시 로그인 페이지로 이동하며 관련 메세지를 띄움
         except jwt.ExpiredSignatureError:
             return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
         except jwt.exceptions.DecodeError:
             return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+    #로그인정보가 없으면 로그인 페이지로 이동
     else:
         return render_template('login.html')
 # 로그인 회원가입 관련 api
 
-# 로그인시
+# 로그인시 성공시
 @app.route('/login')
 def login():
+    #login.html로 이동
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
@@ -76,23 +83,31 @@ def loginCheck():
 # 회원 가입 버튼 클릭시 POST 메서드
 @app.route('/joinCheck', methods=['POST'])
 def joinCheck():
+    #입력으로 전달받은 아이디와 비밀번호 정보를 변수에 저장
     userId_receive = request.form['userId_give']
     password_receive = request.form['password_give']
     #전달 받은 비밀번호 암호화
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     nickname=request.form['nickname_give']
+
+    #전달 받은 회원정보를 dictionary에 저장
     doc = {
         "userId": userId_receive,           # 아이디
         "password": password_hash,          # 비밀번호
         "nickname": nickname                # 닉네임
     }
+
+    #insert문으로 db에 저장 시킴
     db.user.insert_one(doc)
     return jsonify({'result': 'success'})
 
 #회원 가입시 ID 중복 확인
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
+    #전달받은 ID를 변수에 저장
     userId_receive = request.form['userId_give']
+
+    #전달받은 아이디를 조회후 결과를 전달함
     exists = bool(db.user.find_one({"userId": userId_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
