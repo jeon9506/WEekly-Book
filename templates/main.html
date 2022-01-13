@@ -83,6 +83,8 @@
                     </div>
                     <p>
                     <div class="book_list">
+
+                        {#jinja2 변수 이용해 bd#}
                         {% for book in books %}
                             <div class="media">
                                 <a href="/viewDetail?bid={{ book.bid }}">

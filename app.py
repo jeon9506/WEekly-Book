@@ -96,10 +96,13 @@ def check_dup():
     exists = bool(db.user.find_one({"userId": userId_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+# 메인 페이지
 @app.route('/main')
 def main():
     # 로그인 정보 저장 (토큰)
     token_receive = request.cookies.get('mytoken')
+
+    #네이버 베스트셀러 사이트 스크래핑
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
     data = requests.get('https://book.naver.com/bestsell/bestseller_list.naver?cp=kyobo', headers=headers)
@@ -107,15 +110,20 @@ def main():
     soup = BeautifulSoup(data.text, 'html.parser')
 
     charts = soup.select('#section_bestseller > ol > li')
+
+    #책 소개(description) 데이터 리스트화
+    #Description 리스트가 중복으로 Insert 되어 count 처리
     count = 0
     desc = []
     for index in range(0, 25):
         desc_data = soup.find('dd', {'id': "book_intro_" + str(index)}).text
         desc_total = (desc_data[4:100] + "...")
         desc.append(desc_total)
+        #개행 제거
         for i in range(len(desc)):
             desc[i] = desc[i].replace('\n', '')
 
+    #책 제목, 저자, 이미지, bid, 출판사 스크래핑
     for chart in charts:
         title = chart.select_one("dl > dt > a").text
         author = chart.select_one("dl > dd > a").text
@@ -135,6 +143,8 @@ def main():
         }
         count += 1
 
+
+        #데이터가 중복으로 db에 담겨 bid를 지표로 잡아 db에 bid가 존재하지 않을 때만 db에 저장
         bid_dup = db.books.find_one({'bid': bid})
         if bid_dup is None:
             print('~~ 같지않음 : ', bid)
