@@ -19,7 +19,14 @@
     <link rel="stylesheet" href="../static/css/style.css" type="text/css">
 
     <!-- font-awesome icon -->
-    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+
+    <title>1주차 5기 b반 2조</title>
+    <meta property="og:title" content="We(ekly) ; Book"/>
+    <meta property="og:description" content="이번 주 베스트셀러 공유"/>
+    <meta property="og:image" content="../static/img/logo.jpg"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='./img/logo.jpg') }}" type="image/x-icon">
     <style>
 
         .book_image {
@@ -55,8 +62,10 @@
 
         <div style="margin-left:fill;color:white;margin-right: 10px;font-weight: bold;color:#4c5394">
             <i class="fa fa-user-circle" aria-hidden="true"></i> {{ user_info.nickname }}님 &nbsp;&nbsp;&nbsp;
-            <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394"><i class="fa fa-paper-plane" aria-hidden="true"></i> MyPage &nbsp;&nbsp;&nbsp;</a>
-            <a onclick="logout()" style="font-weight: bold;color:#4c5394"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+            <a onclick="window.location.href = '/mypage'" style="font-weight: bold;color:#4c5394"><i
+                    class="fa fa-paper-plane" aria-hidden="true"></i> MyPage &nbsp;&nbsp;&nbsp;</a>
+            <a onclick="logout()" style="font-weight: bold;color:#4c5394"><i class="fa fa-sign-out"
+                                                                             aria-hidden="true"></i> Logout</a>
         </div>
     </nav>
 </header>
