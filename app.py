@@ -29,10 +29,14 @@ def first():
     # 기존 로그인 정보가 있는지 확인하기 위해 토큰에 있는 쿠키정보를 받아옴
     token_receive = request.cookies.get('mytoken')
 
+
     # 조건문을 통해 None이 아니면 main 으로 이동
     if(token_receive is not None):
         try:
-            return redirect(url_for("main"))
+            books = list(db.books.find({}, {'_id': False}))
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+            user_info = db.user.find_one({"userId": payload["id"]})
+            return render_template("main.html",user_info=user_info, books=books)
 
         # 쿠키시간이 만료하거나 정보가 없을시 로그인 페이지로 이동하며 관련 메세지를 띄움
         except jwt.ExpiredSignatureError:
@@ -45,12 +49,26 @@ def first():
         return render_template('login.html')
 # 로그인 회원가입 관련 api
 
-# 로그인시 성공시
+# 로그인시 성공시,
+# url/login로 강제로 이동시 토큰 검사 후에 토큰 보유시 다시 mainpage로 이동함
 @app.route('/login')
 def login():
-    #login.html로 이동
-    msg = request.args.get("msg")
-    return render_template('login.html', msg=msg)
+    token_receive = request.cookies.get('mytoken')
+
+    # 조건문을 통해 None이 아니면 main 으로 이동
+    if (token_receive is not None):
+        try:
+            return redirect(url_for("main"))
+
+        # 쿠키시간이 만료하거나 정보가 없을시 로그인 페이지로 이동하며 관련 메세지를 띄움
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        except jwt.exceptions.DecodeError:
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    else:
+        #login.html로 이동
+        msg = request.args.get("msg")
+        return render_template('login.html', msg=msg)
 
 
 #로그인 기능 버튼 클릭시 POST 받는 메서드
