@@ -167,7 +167,6 @@ def main():
     books = list(db.books.find({}, {'_id': False}))
 
 
-
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"userId": payload["id"]})
