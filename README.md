@@ -48,7 +48,7 @@ https://youtu.be/ccid3LmJKJ4
 ---
 
 ![메인페이지](https://user-images.githubusercontent.com/32161395/149157504-dc64e8a0-47a9-4249-859f-068207c83e37.png)
-#### 메인 페이지 - 크롤링(스크래핑)
+### 메인 페이지 - 크롤링(스크래핑)
 
 - 상위 25위 도서정보 스크래핑 후 도서정보 저장(네이버 베스트셀러)
 - 신규 도서 추가
@@ -59,7 +59,7 @@ https://youtu.be/ccid3LmJKJ4
 ---
 
 ![상세페이지](https://user-images.githubusercontent.com/32161395/149157520-263a3cdb-dc6b-4bee-b3de-1bb616b10a88.png)
-#### 상세페이지
+### 상세페이지
 
 - 도서상세 정보 스크래핑
 - 선택한 도서 관심등록,취소 기능
@@ -70,7 +70,7 @@ https://youtu.be/ccid3LmJKJ4
 ---
 
 ![마이페이지](https://user-images.githubusercontent.com/32161395/149157546-f053425d-cdf7-4fa5-9aeb-7e65bccff5b8.png)
-#### 마이 페이지
+### 마이 페이지
 
 - 사용자가 관심등록한 도서목록을 카드 형식으로 표시
 - 사용자가 이미지와 타이틀 클릭 시 관련도서의 상세정보 조회
