@@ -1,18 +1,31 @@
-# shareTodayNews
-항해 B반 2조
+<h1 align="center">WEekly;Book</h1>
+<div align="center"><b>항해99 1주차 B반 2조 (2022.1.10 ~ 2022.1.13)</b></div>  
+</br>
+</br>
+</br>
 
 ## 프로젝트 소개
 
 - 제목 : We(ekly) ; Book ( 이번 주 베스트셀러 공유 )
-- 설명 : 이번 주 종합 베스트 셀러들을 나열하고, 도서를 클릭하여 댓글을 달고 의견을 공유할 수 있으며 관심 도서를 등록할 수 있는 플랫폼이다.
+- 설명 : 이번 주 종합 베스트 셀러들을 나열하고, 도서를 클릭하여 댓글을 달고 의견을 공유할 수 있으며 관심 도서를 등록할 수 있는 플랫폼입니다.
 
-### 프로젝트 시연영상
-<br/>
 
-### 페이지별 기능
+</br>
+</br>
+
+## 프로젝트 시연영상
+https://youtu.be/ccid3LmJKJ4
+<br/></br>
+
+
+</br>
+</br>
+
+## 페이지별 기능 
+
 
 ![로그인](https://user-images.githubusercontent.com/32161395/149157418-5c8fc416-2478-40ac-88d3-88adce8aab29.png)
-#### 로그인 페이지(최초 접속 시)
+### 로그인 페이지(최초 접속 시)
 
 - 로그인, 회원가입 기능
 - 회원 검사
@@ -21,8 +34,10 @@
 - '회원가입'버튼 클릭 시 회원가입 페이지로 이동
 <br/>
 
+---
+
 ![회원가입](https://user-images.githubusercontent.com/32161395/149157456-c9f3c844-fdd8-4bde-a3fa-9a56ba643c5c.png)
-#### 회원가입 페이지(회원 가입 버튼 클릭 시)
+### 회원가입 페이지(회원 가입 버튼 클릭 시)
 
 - 회원가입 기능
 - 회원가입 시 아이디 중복체크 (id로 체크)
@@ -30,8 +45,10 @@
 - 회원 가입 성공 시 alert창 띄우고 로그인 페이지로 이동
 <br/>
 
+---
+
 ![메인페이지](https://user-images.githubusercontent.com/32161395/149157504-dc64e8a0-47a9-4249-859f-068207c83e37.png)
-#### 메인 페이지 - 크롤링(스크래핑)
+### 메인 페이지 - 크롤링(스크래핑)
 
 - 상위 25위 도서정보 스크래핑 후 도서정보 저장(네이버 베스트셀러)
 - 신규 도서 추가
@@ -39,8 +56,10 @@
 - 이미지, 타이틀 클릭 시 상세 페이지로 이동
 <br/>
 
+---
+
 ![상세페이지](https://user-images.githubusercontent.com/32161395/149157520-263a3cdb-dc6b-4bee-b3de-1bb616b10a88.png)
-#### 상세페이지
+### 상세페이지
 
 - 도서상세 정보 스크래핑
 - 선택한 도서 관심등록,취소 기능
@@ -48,29 +67,36 @@
 - 본인이 등록한 댓글 정보만 삭제가능
 <br/>
 
+---
+
 ![마이페이지](https://user-images.githubusercontent.com/32161395/149157546-f053425d-cdf7-4fa5-9aeb-7e65bccff5b8.png)
-#### 마이 페이지
+### 마이 페이지
 
 - 사용자가 관심등록한 도서목록을 카드 형식으로 표시
 - 사용자가 이미지와 타이틀 클릭 시 관련도서의 상세정보 조회
 - 사용자의 관심도서 삭제 버튼 클릭 시 관심도서 목록에서 삭제 후 reload
-<br/>
+<br>
 
-### API 테이블
+---
 
-| 기능  | Method | URL | request | response |
+## API 테이블  
+
+  
+  
+| 기능  | Method | URL | request |    response    |
 | --- | --- | --- | --- | --- |
-| 로그인 | POST | /loginCheck | {'userId':userId,'password':password} | 로그인 성공 여부 |
-| 회원가입 | POST | /joinCheck | {'userId':userId,'password':password,'nickname',nickname} | 회원가입 성공 여부 |
-| 회원 가입시 ID<br> 중복 확인 | POST | /sign_up/check_dup | {'userId':userId} | ID 중복여부 |
-| 메인페이지 | GET | /main |     | 메인페이지 도서목록 조회 |
-| 상세페이지 | GET | /viewDetail | {'bid':bid} | 선택한 도서 상세,댓글정보 조회 |
-| 마이페이지 | GET | /mypage |     | 마이페이지 관심도서목록 조회 |
-| 도서 댓글 등록 | POST | /createComment | {'userId':userId,'nickname':nickname<br><br> 'bid':bid,'comment':comment} | 도서댓글등록 성공 여부 |
-| 도서 댓글 삭제 | POST | /delComment | {'userId':userId,'_id':ObjectId(id)} | 도서댓글삭제 성공 여부 |
-| 북마크 등록 | POST | /createBookmark | {'userId':userId,'bookId':bookId} | 관심도서등록 성공 여부 |
-| 북마크<br> 삭제 | POST | /delBookmark | {'userId':userId,'bookId':bookId} | 관심도서삭제 성공 여부 |
-<br/>
+| 로그인 | POST | /loginCheck | {'userId':userId,'password':password} |    로그인 성공 여부    
+| 회원가입 | POST | /joinCheck | {'userId':userId,'password':password,'nickname',nickname} |    회원가입 성공 여부    
+| 회원 가입시 ID<br> 중복 확인 | POST | /sign_up/check_dup | {'userId':userId} |    ID 중복여부    
+| 메인페이지 | GET | /main |     | 메인페이지 도서목록 조회 
+| 상세페이지 | GET | /viewDetail | {'bid':bid} | 선택한 도서 상세,댓글정보 조회 
+| 마이페이지 | GET | /mypage |     | 마이페이지 관심도서목록 조회 
+| 도서 댓글 등록 | POST | /createComment | {'userId':userId,'nickname':nickname<br><br> 'bid':bid,'comment':comment} | 도서댓글등록 성공 여부 
+| 도서 댓글 삭제 | POST | /delComment | {'userId':userId,'_id':ObjectId(id)} | 도서댓글삭제 성공 여부 
+| 북마크 등록 | POST | /createBookmark | {'userId':userId,'bookId':bookId} | 관심도서등록 성공 여부 
+| 북마크<br> 삭제 | POST | /delBookmark | {'userId':userId,'bookId':bookId} | 관심도서삭제 성공 여부 
+
+</br>
 
 ## Trouble Shooting
 
@@ -87,7 +113,8 @@
 4. 도서목록 db크롤링 때 데이터가 한 번 더 중복으로 생성됐는데
   bid를 이용해서 db에 bid가 들어가있지 않으면 크롤링 데이터를 db에 생성하는 조건문을 
   써서 중복 문제를 해결하였다.
-<br/><br/>
+<br/>
+<br/>
 
 ## Member
 ### 정희재, 최원준, 전희성, 정택규
