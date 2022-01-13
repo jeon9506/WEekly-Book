@@ -73,7 +73,6 @@ def loginCheck():
          'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 1)  # 로그인 1시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
-
         return jsonify({'result': 'success', 'token': token})
 
     # 찾지 못하면
@@ -166,6 +165,7 @@ def main():
             db.books.insert_one(doc)
 
     books = list(db.books.find({}, {'_id': False}))
+
 
 
     try:
