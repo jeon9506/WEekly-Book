@@ -177,7 +177,6 @@ def main():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-
 #mypage로 이동하기
 @app.route('/mypage')
 def mypage():
