@@ -1,4 +1,4 @@
-# shareTodayNews
+# WEekly:Book
 항해 B반 2조
 
 ## 프로젝트 소개
