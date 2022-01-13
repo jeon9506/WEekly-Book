@@ -169,7 +169,7 @@ def mypage():
 
         soup = BeautifulSoup(data.text, 'html.parser')
 
-        booklist = soup.select('#section_bestseller > ol > li')
+        # description을 스크래핑 하기위한 작업을 해준다
         count = 0
         desc = []
         for index in range(0, 25):
@@ -179,7 +179,8 @@ def mypage():
             for i in range(len(desc)):
                 desc[i] = desc[i].replace('\n', '')
 
-        # 스크래핑 한걸 리스트에 담는다
+        # 도서 정보를 스크래핑 해서 scrappingBookList 리스트에 담는다
+        booklist = soup.select('#section_bestseller > ol > li')
         scrappingBookList = [];
 
         for book in booklist:
@@ -201,21 +202,20 @@ def mypage():
             count += 1
             scrappingBookList.append(doc)
 
-        #for row in scrappingBookList:
-        #    print('~~행:', row)
 
-        # db에 있는 정보를 가져옴
+        # db에 bookmarks, books 테이블 정보를 가져옴
         bookmarks = list(db.bookmarks.find({}))
         books = list(db.books.find({}))
 
-        uBookmarkList = [] # 접속한 사용자가 북마크한 책을 넣어준다
+        # 접속한 사용자가 북마크한 도서를 uBookmarkList에 넣어준다
+        uBookmarkList = []
         for book in books:
             for mark in bookmarks:
                 if str(book['_id']) == mark['bookId'] and mark['userId'] == user_info['userId']:
                     uBookmarkList.append(book)
 
-        # 이건 교보문고에 있는 책 순위에 있는도서와 bookmarks 테이블에 있는 도서의 title이 같은지 비교해서
-        # 추려준다.
+        # 도서 순위에 있는 도서와 bookmarks 테이블에 있는 도서의 title이 같은지 
+        # 비교해서 에 담아준다
         userBookmarkList = []
         for sblist in scrappingBookList:
             for blist in uBookmarkList:
@@ -223,10 +223,8 @@ def mypage():
                     sblist['id'] = str(blist['_id'])
                     userBookmarkList.append(sblist)
 
-        # 참고로 newlist는 위에서 보면 알 듣이 scrappingBookList 에 담겼다.
-        # for row in userBookmarkList:
-        #     print('~~~ 최종 : ', row)
 
+        # jinja2 템플릿을 활용하여 user_info에는 유저정보를 userBookmarkList에는 해당 사용자가 북마크한 도서정보를 담았다.
         return render_template('mypage.html', user_info=user_info, userBookmarkList=userBookmarkList)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
